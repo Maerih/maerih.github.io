@@ -3,7 +3,6 @@
 icon: fas fa-info-circle
 order: 4
 ---
-# About Me - Maerih.
 
 ![Security](/assets/img/hackers.webp)
 
