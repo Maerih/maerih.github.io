@@ -4,8 +4,6 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-![Security](/assets/img/hackers.webp)
-
 ## Who Am I?
 
 I am **Maerih **, a dedicated **Security Researcher** with a focus on **penetration testing**, **reverse engineering**, and **exploit development**. My expertise spans a range of technologies, from **Windows Internals** to advanced **scripting** languages. I thrive in uncovering vulnerabilities and building systems that strengthen cybersecurity.
@@ -17,6 +15,8 @@ I am **Maerih **, a dedicated **Security Researcher** with a focus on **penetrat
 ⚒️ **Exploit Development**  
 🖥️ **Windows Internals**  
 📜 **Scripting & Automation**
+
+![Security](/assets/img/hackers.webp)
 
 I work relentlessly to stay ahead of emerging threats, using my knowledge and tools to safeguard the digital landscape.
 
