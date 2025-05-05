@@ -1,0 +1,73 @@
+---
+title: TITLE
+date: 2023-06-03 00:00:00 +0800
+categories: [TOP_CATEGORIE, SUB_CATEGORIE]
+tags: [TAG]     # TAG names should always be lowercase
+---
+
+#Testing one two...
+
+![Desktop View](/assets/maerih.webp){: .shadow } 
+_This is from kenya!_
+
+![Desktop View](/assets/maerih.webp){: w="350" h="200" }
+_smaller_
+
+
+{% include embed/youtube.html id='0Wbc5ZwkAMw' %}
+
+{%  
+  include embed/video.html
+  src='/path/to/video.mp4'
+  types='ogg|mov'
+  poster='poster.png'
+  title='Demo video'
+  autoplay=true
+  loop=true
+  muted=true
+%}
+ 
+
+ {%
+  include embed/audio.html
+  src='/path/to/audio.mp3'
+  types='ogg|wav|aac'
+  title='Demo audio'
+%}
+---
+pin: true
+---
+
+> Example line for prompt.
+{: .prompt-info }
+
+> Example line for prompt.
+{: .prompt-tip }
+
+
+> Example line for prompt.
+{: .prompt-warning }
+
+
+> Example line for prompt.
+{: .prompt-danger }
+
+
+This is inline code:  `while (choice != '5');` have you seen.
+
+```cpp
+public:
+    Book() {}
+    Book(string id, string title, string author, int publisherYear)
+        : id(id), title(title), author(author), publisherYear(publisherYear) {}
+
+    virtual void toString() const = 0;
+};
+```
+{% raw %}
+```liquid
+{% if product.title contains 'Pack' %}
+  This product's title contains the word Pack.
+{% endif %}
+```
+{% endraw %}
