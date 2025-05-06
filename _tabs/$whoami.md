@@ -8,6 +8,44 @@ order: 4
 <h1>🛡 Offensive Security Researcher & Red Team Operator</h1>
 <h4>Simulating adversaries. Strengthening defenses.</h4>
 
+
+<h1>I'm 
+  <div class="waviy">
+    <span style="--i:1">M</span>
+    <span style="--i:2">A</span>
+    <span style="--i:3">E</span>
+    <span style="--i:4">R</span>
+    <span style="--i:5">I</span>
+    <span style="--i:6">H</span>
+  </div>
+</h1>
+
+<style>
+.waviy {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.waviy span {
+  position: relative;
+  display: inline-block;
+  color: #00ffee;
+  font-size: 2.5rem;
+  animation: waviy 1s infinite;
+  animation-delay: calc(0.1s * var(--i));
+}
+
+@keyframes waviy {
+  0%, 40%, 100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-15px);
+  }
+}
+</style>
+
+
 <h1>whoami: <span id="dynamic-role">pentester</span></h1>
 
 <script>
