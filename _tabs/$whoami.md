@@ -12,12 +12,14 @@ order: 4
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
 <!-- Animated text block -->
-<h1 class="waviy">
-  <span style="--i:1">M</span>
-  <span style="--i:2">A</span>
-  <span style="--i:3">E</span>
-  <span style="--i:4">R</span>
-  <span style="--i:5">I</span>
+<h1>i'm
+  <div class="waviy">
+    <span style="--i:1">M</span>
+    <span style="--i:2">A</span>
+    <span style="--i:3">E</span>
+    <span style="--i:4">R</span>
+    <span style="--i:5">I</span>  
+  </div>
 </h1>
 
 <!-- Inline style for animation and reflection -->
