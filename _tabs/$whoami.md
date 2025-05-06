@@ -9,38 +9,80 @@ order: 4
 <h4>Simulating adversaries. Strengthening defenses.</h4>
 
 
-<h1>I'm 
-  <div class="waviy">
-    <span style="--i:1">M</span>
-    <span style="--i:2">A</span>
-    <span style="--i:3">E</span>
-    <span style="--i:4">R</span>
-    <span style="--i:5">I</span>
-    <span style="--i:6">H</span>
-  </div>
-</h1>
+<header class="hero">
+    <div class="section-center hero-center">
+      <article class="hero-info">
+        <div class="underline"></div>
+        <h1>i'm 
+          <div class="waviy">
+            <span style="--i:1">M</span>
+            <span style="--i:2">A</span>
+            <span style="--i:3">E</span>
+            <span style="--i:4">R</span>
+            <span style="--i:5">I</span>
+         </div>
+        </h1>
+        <div class='console-container'><span id='text'></span><div class='console-underscore' id='console'></div></div>
+        <a href="#contact" class="btn hero-btn">Contact me</a>
+        <!-- social icons -->
+        <ul class="social-icons hero-icons">
+          <li>
+            <a href="https://twitter.com/roughmaeri" target="_blank" rel="noopener noreferrer" class="social-icon">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.linkedin.com/in/rough-maeri-4a8b89240/" target="_blank" rel="noopener noreferrer"
+              class="social-icon">
+              <i class="fab fa-linkedin"></i>
+            </a>
+
+          </li>
+          <li>
+            <a href="https://github.com/Maerih" target="_blank" rel="noopener noreferrer" class="social-icon">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+          <li>
+            <a href="https://dev.to/maerih" target="_blank" rel="noopener noreferrer" class="social-icon">
+              <i class="fab fa-dev"></i>
+            </a>
+          </li>
+         
+        </ul>
+        <a class="cv-button" href="https://drive.google.com/file/d/1nnL1FuiVsLkNNXhBSJ5h-lR6gytyRRd6X/view?usp=drivesdk">
+          <button class="glow-on-hover" type="button">Download CV</button>
+        </a>
+      </article>
+      <article class="hero-img">
+        <img src="images/mypic.jpg" class="hero-photo" loading="lazy" alt="maeri" />
+      </article>
+     
+    </div>
+  </header>
 
 <style>
 .waviy {
-  display: inline-block;
-  margin-left: 10px;
+  position: relative;
+  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
+  font-size: 60px;
 }
-
 .waviy span {
+  font-family: 'Alfa Slab One', cursive;
   position: relative;
   display: inline-block;
-  color: #00ffee;
-  font-size: 2.5rem;
+  color: #fff;
+  text-transform: uppercase;
   animation: waviy 1s infinite;
-  animation-delay: calc(0.1s * var(--i));
+  animation-delay: calc(.1s * var(--i));
+  
 }
-
 @keyframes waviy {
-  0%, 40%, 100% {
-    transform: translateY(0);
+  0%,40%,100% {
+    transform: translateY(0)
   }
   20% {
-    transform: translateY(-15px);
+    transform: translateY(-20px)
   }
 }
 </style>
