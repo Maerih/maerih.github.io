@@ -13,7 +13,8 @@ order: 4
 
 <style>
 .waviy {
-  font-family: 'Alfa Slab One', cursive;
+  position: relative;
+  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
   font-size: 60px;
 }
 .waviy span {
