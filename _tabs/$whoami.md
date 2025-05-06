@@ -8,6 +8,18 @@ order: 4
 <h1>🛡 Offensive Security Researcher & Red Team Operator</h1>
 <h4>Simulating adversaries. Strengthening defenses.</h4>
 
+<h1>whoami: <span id="dynamic-role">pentester</span></h1>
+
+<script>
+  const words = ["pentester", "pythonist", "red teamer", "reverser", "offsec nerd"];
+  let index = 0;
+  setInterval(() => {
+    document.getElementById("dynamic-role").textContent = words[index];
+    index = (index + 1) % words.length;
+  }, 2000); // Change every 2 seconds
+</script>
+
+
 Cybersecurity is not a product — it’s a mindset. I specialize in offensive security, conducting red team operations, reverse engineering, and custom exploit development to emulate real-world threats and identify security gaps before adversaries do.
 
 ---
