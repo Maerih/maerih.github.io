@@ -11,28 +11,7 @@ order: 4
 
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
-<style>
-.waviy {
-  position: relative;
-  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
-  font-size: 60px;
-}
-.waviy span {
-  display: inline-block;
-  color: #00ffee;
-  animation: waviy 1s infinite;
-  animation-delay: calc(.1s * var(--i));
-}
-@keyframes waviy {
-  0%, 40%, 100% {
-    transform: translateY(0);
-  }
-  20% {
-    transform: translateY(-15px);
-  }
-}
-</style>
-
+<!-- Animated text block -->
 <h1 class="waviy">
   <span style="--i:1">M</span>
   <span style="--i:2">A</span>
@@ -41,6 +20,31 @@ order: 4
   <span style="--i:5">I</span>
 </h1>
 
+<!-- Inline style for animation and reflection -->
+<style>
+.waviy {
+  position: relative;
+  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
+  font-size: 60px;
+}
+.waviy span {
+  font-family: 'Alfa Slab One', cursive;
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  text-transform: uppercase;
+  animation: waviy 1s infinite;
+  animation-delay: calc(0.1s * var(--i));
+}
+@keyframes waviy {
+  0%, 40%, 100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-20px);
+  }
+}
+</style>
 
 
 <h1>whoami: <span id="dynamic-role">pentester</span></h1>
