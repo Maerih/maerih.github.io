@@ -9,33 +9,19 @@ order: 4
 <h4>Simulating adversaries. Strengthening defenses.</h4>
 
 
-<h1>I'm 
-  <div class="waviy">
-    <span style="--i:1">M</span>
-    <span style="--i:2">A</span>
-    <span style="--i:3">E</span>
-    <span style="--i:4">R</span>
-    <span style="--i:5">I</span>
-    <span style="--i:6">H</span>
-  </div>
-</h1>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
 <style>
 .waviy {
-  position: relative;
-  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
+  font-family: 'Alfa Slab One', cursive;
   font-size: 60px;
 }
-
 .waviy span {
-  position: relative;
   display: inline-block;
   color: #00ffee;
-  font-size: 2.5rem;
   animation: waviy 1s infinite;
-  animation-delay: calc(0.1s * var(--i));
+  animation-delay: calc(.1s * var(--i));
 }
-
 @keyframes waviy {
   0%, 40%, 100% {
     transform: translateY(0);
@@ -45,6 +31,15 @@ order: 4
   }
 }
 </style>
+
+<h1 class="waviy">
+  <span style="--i:1">M</span>
+  <span style="--i:2">A</span>
+  <span style="--i:3">E</span>
+  <span style="--i:4">R</span>
+  <span style="--i:5">I</span>
+</h1>
+
 
 
 <h1>whoami: <span id="dynamic-role">pentester</span></h1>
