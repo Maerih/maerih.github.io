@@ -9,10 +9,10 @@ order: 4
 <h4>Simulating adversaries. Strengthening defenses.</h4>
 
 
-<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
 
 <!-- Animated text block -->
-<h1>i'm
+<h1>I'm
   <div class="waviy">
     <span style="--i:1">M</span>
     <span style="--i:2">A</span>
@@ -30,7 +30,7 @@ order: 4
   font-size: 60px;
 }
 .waviy span {
-  font-family: 'Alfa Slab One', cursive;
+  font-family: 'Poppins', sans-serif;
   position: relative;
   display: inline-block;
   color: #fff;
@@ -47,6 +47,7 @@ order: 4
   }
 }
 </style>
+
 
 
 <h1>whoami: <span id="dynamic-role">pentester</span></h1>
