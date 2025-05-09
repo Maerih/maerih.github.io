@@ -10,7 +10,7 @@ order: 4
 
 
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
-
+<div class="underline"></div>
 <!-- Animated text block -->
 <h1>I'm
   <div class="waviy">
@@ -45,6 +45,15 @@ order: 4
   20% {
     transform: translateY(-20px);
   }
+}
+
+.underline {
+  width: 5rem;
+  height: 0.25rem;
+  margin-bottom: 1.25rem;
+  background: var(--clr-secondary);
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
 
