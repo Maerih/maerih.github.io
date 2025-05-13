@@ -20,12 +20,12 @@ order: 4
     </h1>
   </div>
   <div>
-    <img src="/assets/maerih.webp" alt="Maerih" style="max-width: 50px; border-radius: 12px;" />
+    <img src="/assets/maeri.webp" alt="Maerih" style="max-width: 50px; border-radius: 12px;" />
   </div>
 </div>
 
 
-<div style="font-size: 36px; font-weight: bold; font-family: monospace;">
+<div style="font-size: 30px; font-weight: bold; font-family: monospace;">
   <span id="text"></span><span id="console" class="console-underscore">|</span>
 </div>
 
@@ -158,7 +158,7 @@ and it will show up on this page.
 
 <script>
   window.onload = function () {
-    consoleText(['C++ist,', 'Exploit Developer,', 'Pentester,', 'Hunter,'], 'text', ['tomato', 'rebeccapurple', 'lightblue']);
+    consoleText(['A C++ist,', 'An Exploit Developer,', 'A Pentester,', 'A Hunter,'], 'text', ['tomato', 'rebeccapurple', 'lightblue']);
   };
 
   function consoleText(words, id, colors) {
