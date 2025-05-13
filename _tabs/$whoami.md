@@ -20,12 +20,12 @@ order: 4
     </h1>
   </div>
   <div>
-    <img src="/assets/maeri.webp" alt="Maerih" style="max-width: 50px; border-radius: 12px;" />
+    <img src="/assets/maeri.webp" alt="Maerih" style="max-width: 300px; border-radius: 12px;" />
   </div>
 </div>
 
 
-<div style="font-size: 45px; font-weight: bold; font-family: monospace;">
+<div style="font-size: 56px; font-weight: bold; font-family: monospace;">
   <span id="text"></span><span id="console" class="console-underscore">|</span>
 </div>
 
