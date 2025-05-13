@@ -20,7 +20,7 @@ order: 4
     </h1>
   </div>
   <div>
-    <img src="/assets/maerih.webp" alt="Maerih" style="max-width: 200px; border-radius: 12px;" />
+    <img src="/assets/maerih.webp" alt="Maerih" style="max-width: 50px; border-radius: 12px;" />
   </div>
 </div>
 
