@@ -5,14 +5,13 @@ order: 4
 ---
 
 
-<h1>🛡 Offensive Security Researcher & Red Team Operator</h1>
-<h4>Simulating adversaries. Strengthening defenses.</h4>
 
 
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
 <!-- Animated text block -->
-<h1>I'm
+<h1>I'm</h1>
+<h1>
   <div class="waviy">
     <span style="--i:1">M</span>
     <span style="--i:2">A</span>
@@ -106,6 +105,8 @@ order: 4
   }
 </script>
 
+<h1>🛡 Offensive Security Researcher & Red Team Operator</h1>
+<h4>Simulating adversaries. Strengthening defenses.</h4>
 
 Cybersecurity is not a product — it’s a mindset. I specialize in offensive security, conducting red team operations, reverse engineering, and custom exploit development to emulate real-world threats and identify security gaps before adversaries do.
 
