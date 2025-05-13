@@ -22,6 +22,13 @@ order: 4
 
 
 
+
+<div>
+  <span id="text"></span><span id="console" class="console-underscore">|</span>
+</div>
+
+
+
 <h1>🛡 Offensive Security Researcher & Red Team Operator</h1>
 <h4>Simulating adversaries. Strengthening defenses.</h4>
 
@@ -99,8 +106,6 @@ and it will show up on this page.
 
 
 
-
-
 <!-- Inline style for animation and reflection -->
 <style>
 .waviy {
@@ -109,7 +114,7 @@ and it will show up on this page.
   font-size: 60px;
 }
 .waviy span {
-  font-family: 'Alfa Slab One', cursive;
+  font-family: Consolas, 'Lucida Console', 'Courier New', Monaco, Menlo, monospace;
   position: relative;
   display: inline-block;
   color: #fff;
@@ -126,11 +131,6 @@ and it will show up on this page.
   }
 }
 </style>
-
-
-<div>
-  <span id="text"></span><span id="console" class="console-underscore">|</span>
-</div>
 
 <script>
   window.onload = function () {
