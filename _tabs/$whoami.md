@@ -7,25 +7,17 @@ order: 4
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
 <!-- Animated text block -->
-<div style="display: flex; align-items: center; justify-content: space-between;">
-  <div>
-    <h1>I'm
-      <div class="waviy">
-        <span style="--i:1">M</span>
-        <span style="--i:2">A</span>
-        <span style="--i:3">E</span>
-        <span style="--i:4">R</span>
-        <span style="--i:5">I</span>  
-      </div>
-    </h1>
+<h1>I'm
+  <div class="waviy">
+    <span style="--i:1">M</span>
+    <span style="--i:2">A</span>
+    <span style="--i:3">E</span>
+    <span style="--i:4">R</span>
+    <span style="--i:5">I</span>  
   </div>
-  <div>
-    <img src="/assets/maeri.webp" alt="Maerih" style="max-width: 150px; border-radius: 12px;" />
-  </div>
-</div>
+</h1>
 
-
-<div style="font-size: 56px; font-weight: bold; font-family: monospace;">
+<div>
   <span id="text"></span><span id="console" class="console-underscore">|</span>
 </div>
 
@@ -135,7 +127,7 @@ and it will show up on this page.
 .waviy {
   position: relative;
   -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
-  font-size: 70px;
+  font-size: 60px;
 }
 .waviy span {
   font-family: Consolas, 'Lucida Console', 'Courier New', Monaco, Menlo, monospace;
