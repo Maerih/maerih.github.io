@@ -17,6 +17,10 @@
 - type: linkedin
   icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
   url:  'https://www.linkedin.com/in/maeri/'
+
+- type: Kali Linux
+  icon: 'fab fa-linux'   # icons powered by <https://fontawesome.com/>
+  url:  'https://maerih.github.io/Portfolio/'   
 # Uncomment and complete the url below to enable more contact options
 #
 # - type: mastodon
