@@ -19,30 +19,31 @@ order: 4
   </div>
 </h1>
 
-<!-- CSS -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
-
 body {
   background-color: #000;
   margin: 0;
   padding: 20px;
 }
 
-.waviy {
-  position: relative;
-  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
-  font-size: 60px;
-}
+/* Local system font stack: bold, impactful, cross-platform */
 .waviy span {
-  font-family: 'Alfa Slab One', cursive;
+  font-family: 'Segoe UI Black', 'Arial Black', Impact, sans-serif;
   position: relative;
   display: inline-block;
   color: #fff;
   text-transform: uppercase;
   animation: waviy 1s infinite;
   animation-delay: calc(0.1s * var(--i));
+  font-weight: 900;
+  font-size: 60px;
 }
+
+.waviy {
+  position: relative;
+  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
+}
+
 @keyframes waviy {
   0%, 40%, 100% {
     transform: translateY(0);
@@ -52,6 +53,7 @@ body {
   }
 }
 </style>
+
 
 
 
