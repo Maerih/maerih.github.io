@@ -9,6 +9,9 @@ order: 4
 <h4>Simulating adversaries. Strengthening defenses.</h4>
 
 
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+
+<!-- Animated text block -->
 <h1>I'm
   <div class="waviy">
     <span style="--i:1">M</span>
@@ -19,31 +22,22 @@ order: 4
   </div>
 </h1>
 
+<!-- Inline style for animation and reflection -->
 <style>
-body {
-  background-color: #000;
-  margin: 0;
-  padding: 20px;
+.waviy {
+  position: relative;
+  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
+  font-size: 60px;
 }
-
-/* Local system font stack: bold, impactful, cross-platform */
 .waviy span {
-  font-family: 'Segoe UI Black', 'Arial Black', Impact, sans-serif;
+  font-family: 'Alfa Slab One', cursive;
   position: relative;
   display: inline-block;
   color: #fff;
   text-transform: uppercase;
   animation: waviy 1s infinite;
   animation-delay: calc(0.1s * var(--i));
-  font-weight: 900;
-  font-size: 60px;
 }
-
-.waviy {
-  position: relative;
-  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
-}
-
 @keyframes waviy {
   0%, 40%, 100% {
     transform: translateY(0);
@@ -55,65 +49,16 @@ body {
 </style>
 
 
-
-
-<div>
-  <span id="text"></span><span id="console" class="console-underscore">|</span>
-</div>
+<h1>whoami: <span id="dynamic-role">pentester</span></h1>
 
 <script>
-  window.onload = function () {
-    consoleText(['A Linux System Administrator,', 'A Pythonist,', 'A Cyber Security Analyst (CySA+),'], 'text', ['tomato', 'rebeccapurple', 'lightblue']);
-  };
-
-  function consoleText(words, id, colors) {
-    if (colors === undefined) colors = ['#fff'];
-    var visible = true;
-    var con = document.getElementById('console');
-    var letterCount = 1;
-    var x = 1;
-    var waiting = false;
-    var target = document.getElementById(id);
-    target.setAttribute('style', 'color:' + colors[0]);
-    window.setInterval(function () {
-      if (letterCount === 0 && !waiting) {
-        waiting = true;
-        target.innerHTML = words[0].substring(0, letterCount);
-        setTimeout(function () {
-          var usedColor = colors.shift();
-          colors.push(usedColor);
-          var usedWord = words.shift();
-          words.push(usedWord);
-          x = 1;
-          target.setAttribute('style', 'color:' + colors[0]);
-          letterCount += x;
-          waiting = false;
-        }, 1000);
-      } else if (letterCount === words[0].length + 1 && !waiting) {
-        waiting = true;
-        setTimeout(function () {
-          x = -1;
-          letterCount += x;
-          waiting = false;
-        }, 1000);
-      } else if (!waiting) {
-        target.innerHTML = words[0].substring(0, letterCount);
-        letterCount += x;
-      }
-    }, 120);
-
-    setInterval(function () {
-      if (visible) {
-        con.style.visibility = 'hidden';
-        visible = false;
-      } else {
-        con.style.visibility = 'visible';
-        visible = true;
-      }
-    }, 400);
-  }
+  const words = ["pentester", "pythonist", "red teamer", "reverser", "offsec nerd"];
+  let index = 0;
+  setInterval(() => {
+    document.getElementById("dynamic-role").textContent = words[index];
+    index = (index + 1) % words.length;
+  }, 2000); // Change every 2 seconds
 </script>
-
 
 
 Cybersecurity is not a product — it’s a mindset. I specialize in offensive security, conducting red team operations, reverse engineering, and custom exploit development to emulate real-world threats and identify security gaps before adversaries do.
