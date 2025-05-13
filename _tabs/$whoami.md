@@ -10,8 +10,7 @@ order: 4
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
 <!-- Animated text block -->
-<h1>I'm</h1>
-<h1>
+<h1>I'm
   <div class="waviy">
     <span style="--i:1">M</span>
     <span style="--i:2">A</span>
@@ -21,89 +20,7 @@ order: 4
   </div>
 </h1>
 
-<!-- Inline style for animation and reflection -->
-<style>
-.waviy {
-  position: relative;
-  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
-  font-size: 60px;
-}
-.waviy span {
-  font-family: Consolas, 'Lucida Console', 'Courier New', Monaco, Menlo, monospace;
-  position: relative;
-  display: inline-block;
-  color: #fff;
-  text-transform: uppercase;
-  animation: waviy 1s infinite;
-  animation-delay: calc(0.1s * var(--i));
-}
-@keyframes waviy {
-  0%, 40%, 100% {
-    transform: translateY(0);
-  }
-  20% {
-    transform: translateY(-20px);
-  }
-}
-</style>
 
-
-<div>
-  <span id="text"></span><span id="console" class="console-underscore">|</span>
-</div>
-
-<script>
-  window.onload = function () {
-    consoleText(['C++ist,', 'Exploit Developer,', 'Pentester,', 'Hunter,'], 'text', ['tomato', 'rebeccapurple', 'lightblue']);
-  };
-
-  function consoleText(words, id, colors) {
-    if (colors === undefined) colors = ['#fff'];
-    var visible = true;
-    var con = document.getElementById('console');
-    var letterCount = 1;
-    var x = 1;
-    var waiting = false;
-    var target = document.getElementById(id);
-    target.setAttribute('style', 'color:' + colors[0]);
-    window.setInterval(function () {
-      if (letterCount === 0 && !waiting) {
-        waiting = true;
-        target.innerHTML = words[0].substring(0, letterCount);
-        setTimeout(function () {
-          var usedColor = colors.shift();
-          colors.push(usedColor);
-          var usedWord = words.shift();
-          words.push(usedWord);
-          x = 1;
-          target.setAttribute('style', 'color:' + colors[0]);
-          letterCount += x;
-          waiting = false;
-        }, 1000);
-      } else if (letterCount === words[0].length + 1 && !waiting) {
-        waiting = true;
-        setTimeout(function () {
-          x = -1;
-          letterCount += x;
-          waiting = false;
-        }, 1000);
-      } else if (!waiting) {
-        target.innerHTML = words[0].substring(0, letterCount);
-        letterCount += x;
-      }
-    }, 120);
-
-    setInterval(function () {
-      if (visible) {
-        con.style.visibility = 'hidden';
-        visible = false;
-      } else {
-        con.style.visibility = 'visible';
-        visible = true;
-      }
-    }, 400);
-  }
-</script>
 
 <h1>🛡 Offensive Security Researcher & Red Team Operator</h1>
 <h4>Simulating adversaries. Strengthening defenses.</h4>
@@ -179,3 +96,91 @@ and it will show up on this page.
 
 > Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
 {: .prompt-tip }
+
+
+
+
+
+<!-- Inline style for animation and reflection -->
+<style>
+.waviy {
+  position: relative;
+  -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
+  font-size: 60px;
+}
+.waviy span {
+  font-family: 'Alfa Slab One', cursive;
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  text-transform: uppercase;
+  animation: waviy 1s infinite;
+  animation-delay: calc(0.1s * var(--i));
+}
+@keyframes waviy {
+  0%, 40%, 100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-20px);
+  }
+}
+</style>
+
+
+<div>
+  <span id="text"></span><span id="console" class="console-underscore">|</span>
+</div>
+
+<script>
+  window.onload = function () {
+    consoleText(['C++ist,', 'Exploit Developer,', 'Pentester,', 'Hunter,'], 'text', ['tomato', 'rebeccapurple', 'lightblue']);
+  };
+
+  function consoleText(words, id, colors) {
+    if (colors === undefined) colors = ['#fff'];
+    var visible = true;
+    var con = document.getElementById('console');
+    var letterCount = 1;
+    var x = 1;
+    var waiting = false;
+    var target = document.getElementById(id);
+    target.setAttribute('style', 'color:' + colors[0]);
+    window.setInterval(function () {
+      if (letterCount === 0 && !waiting) {
+        waiting = true;
+        target.innerHTML = words[0].substring(0, letterCount);
+        setTimeout(function () {
+          var usedColor = colors.shift();
+          colors.push(usedColor);
+          var usedWord = words.shift();
+          words.push(usedWord);
+          x = 1;
+          target.setAttribute('style', 'color:' + colors[0]);
+          letterCount += x;
+          waiting = false;
+        }, 1000);
+      } else if (letterCount === words[0].length + 1 && !waiting) {
+        waiting = true;
+        setTimeout(function () {
+          x = -1;
+          letterCount += x;
+          waiting = false;
+        }, 1000);
+      } else if (!waiting) {
+        target.innerHTML = words[0].substring(0, letterCount);
+        letterCount += x;
+      }
+    }, 120);
+
+    setInterval(function () {
+      if (visible) {
+        con.style.visibility = 'hidden';
+        visible = false;
+      } else {
+        con.style.visibility = 'visible';
+        visible = true;
+      }
+    }, 400);
+  }
+</script>
