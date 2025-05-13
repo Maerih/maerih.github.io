@@ -9,9 +9,6 @@ order: 4
 <h4>Simulating adversaries. Strengthening defenses.</h4>
 
 
-<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
-
-<!-- Animated text block -->
 <h1>I'm
   <div class="waviy">
     <span style="--i:1">M</span>
@@ -22,8 +19,16 @@ order: 4
   </div>
 </h1>
 
-<!-- Inline style for animation and reflection -->
+<!-- CSS -->
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
+
+body {
+  background-color: #000;
+  margin: 0;
+  padding: 20px;
+}
+
 .waviy {
   position: relative;
   -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
@@ -47,6 +52,7 @@ order: 4
   }
 }
 </style>
+
 
 
 <div>
