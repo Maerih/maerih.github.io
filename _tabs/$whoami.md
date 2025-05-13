@@ -4,9 +4,6 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-
-
-
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
 <!-- Animated text block -->
@@ -20,12 +17,14 @@ order: 4
   </div>
 </h1>
 
-
-
-
 <div>
   <span id="text"></span><span id="console" class="console-underscore">|</span>
 </div>
+
+
+I’m an Offensive Security Researcher with a sharp focus on Penetration Testing, Exploit Development, and Reverse Engineering. 
+My work involves tactically breaking down complex systems to uncover vulnerabilities, developing targeted exploits, and reinforcing defenses against advanced threats. 
+I specialize in Windows Internals and advanced scripting to craft bespoke solutions that stay ahead of evolving attack vectors. Currently, at SCIAT AFRICA, I lead research efforts to enhance cybersecurity strategies and empower organizations to combat sophisticated cyber threats.
 
 
 
