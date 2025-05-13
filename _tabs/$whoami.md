@@ -25,7 +25,7 @@ order: 4
 </div>
 
 
-<div>
+<div style="font-size: 76px; font-weight: bold; font-family: monospace;">
   <span id="text"></span><span id="console" class="console-underscore">|</span>
 </div>
 
