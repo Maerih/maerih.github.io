@@ -21,13 +21,35 @@ order: 4
   <span id="text"></span><span id="console" class="console-underscore">|</span>
 </div>
 
-<h4>
+
 I’m Onyonka Maeri, an Offensive Security Researcher with a sharp focus on Penetration Testing, Exploit Development, and Reverse Engineering. 
 
 My work involves tactically breaking down complex systems to uncover vulnerabilities, developing targeted exploits, and reinforcing defenses against advanced threats. 
 
 I specialize in Windows Internals and advanced scripting to craft bespoke solutions that stay ahead of evolving attack vectors. Currently, at SCIAT AFRICA, I lead research efforts to enhance cybersecurity strategies and empower organizations to combat sophisticated cyber threats.
-</h4>
+
+
+## 💻 Offensive Toolkit
+
+I work hands-on with a diverse set of tools and techniques tailored for red teaming and adversarial simulation.
+
+- **Languages**: C++, Python, PowerShell, Bash, Assembly (x64 & ARM), Java 
+- **Reverse Engineering**: IDA Pro, Ghidra, x64dbg, Frida, Radare2
+- **Recon**: Nmap, Amass, Shodan, Maltego  
+- **Exploitation**: Custom exploit development, CVE weaponization, reverse engineering  
+- **Post-Exploitation**: BloodHound, Mimikatz, SharpHound, Rubeus  
+- **Methodologies**: MITRE ATT&CK, STRIDE, PASTA, OSSTMM, PTES 
+- **Frameworks**: Cobalt Strike, Metasploit, Mythic, Empire 
+
+
+## 🔗 Connect With Me
+
+- 🌐 [Portfolio](https://maerih.github.io/Portfolio/)
+- 🐙 [GitHub](https://github.com/maerih)
+- 🧠 [TryHackMe Profile](https://tryhackme.com/p/yourname)
+- 🎯 [Hack The Box](https://app.hackthebox.com/profile/yourname)
+- 💼 [LinkedIn](https://www.linkedin.com/in/maeri/)
+- 📧 [Email Me](mailto:onyonkamaeriofficial@gmail.com)
 
 
 <h1>🛡 Offensive Security Researcher & Red Team Operator</h1>
@@ -86,14 +108,7 @@ Red team operations are more than technical tasks — they’re about understand
 
 ---
 
-## 🔗 Connect With Me
 
-- 🌐 [My Research Blog](https://yourblog.example.com)
-- 🐙 [GitHub: yourusername](https://github.com/yourusername)
-- 🧠 [TryHackMe Profile](https://tryhackme.com/p/yourname)
-- 🎯 [Hack The Box](https://app.hackthebox.com/profile/yourname)
-- 💼 [LinkedIn](https://linkedin.com/in/yourusername)
-- 📧 [Email Me](mailto:your@email.com)
 
 ---
 
