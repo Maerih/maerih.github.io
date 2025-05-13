@@ -20,12 +20,12 @@ order: 4
     </h1>
   </div>
   <div>
-    <img src="/assets/maeri.webp" alt="Maerih" style="max-width: 50px; border-radius: 12px;" />
+    <img src="/assets/maerih.webp" alt="Maerih" style="max-width: 200px; border-radius: 12px;" />
   </div>
 </div>
 
 
-<div style="font-size: 45px; font-weight: bold; font-family: monospace;">
+<div style="font-size: 36px; font-weight: bold; font-family: monospace;>
   <span id="text"></span><span id="console" class="console-underscore">|</span>
 </div>
 
@@ -135,7 +135,7 @@ and it will show up on this page.
 .waviy {
   position: relative;
   -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
-  font-size: 70px;
+  font-size: 60px;
 }
 .waviy span {
   font-family: Consolas, 'Lucida Console', 'Courier New', Monaco, Menlo, monospace;
