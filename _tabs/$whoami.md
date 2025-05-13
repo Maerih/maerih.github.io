@@ -20,7 +20,7 @@ order: 4
     </h1>
   </div>
   <div>
-    <img src="/assets/maerih.webp" alt="Maerih" style="max-width: 200px; border-radius: 12px;" />
+    <img src="/assets/maeri.webp" alt="Maerih" style="max-width: 300px; border-radius: 12px;" />
   </div>
 </div>
 
@@ -135,7 +135,7 @@ and it will show up on this page.
 .waviy {
   position: relative;
   -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
-  font-size: 60px;
+  font-size: 70px;
 }
 .waviy span {
   font-family: Consolas, 'Lucida Console', 'Courier New', Monaco, Menlo, monospace;
