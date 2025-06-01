@@ -189,9 +189,7 @@ adb shell am start -n <package_name>/<activity_name> --es <key> <value>
     
 - **Explanation:** In this example, `user_id` is the key, and `"12345"` is the value being passed to the `MainActivity` of `com.example.app`. The receiving activity can access this value using the `getStringExtra` method.
     
-    ![Untitled](../images/android%20app/Untitled.png)
-    
-    ![Untitled](../images/android%20app/Untitled%201.png)
+
     
 
 String might not be always the case so for we can use following flag for other data types.
