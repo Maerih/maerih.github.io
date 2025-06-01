@@ -1,7 +1,7 @@
 ---
 layout: post
 title: x86 Assembly Basics
-date: 2024-08-25 21:32 -0400
+date: 2022-08-25 21:32 -0400
 description: Learn the basics of x86 assembly code for use in dissemblers
 categories:
   - Reverse Engineering Malware
