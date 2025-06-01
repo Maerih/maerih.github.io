@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Make HTML Smuggling Great Again P1"
-date: 2024-12-30
+date: 2023-12-30
 categories: security html
 ---
 
