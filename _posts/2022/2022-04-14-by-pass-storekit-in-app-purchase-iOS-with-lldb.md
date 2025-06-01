@@ -1,9 +1,6 @@
 ---
 layout: post
-title: Bypass StoreKit In-app purchases of iOS apps using LLDB
-image:
-    path: /img/storekit-flow.png
-    alt: StoreKit In-app Purchases
+title: "Bypassing StoreKit In-app purchases of iOS apps"
 tags: [ios, lldb, storekit, iap, bypass]
 ---
 
@@ -21,12 +18,12 @@ Below tools are used during this post:
 
 ## Overview
 When you install an app from App Store, if it has In-App Purchases feature it will show beside then Install button. Let install REDACTED app on the jailbroken device first and launch the app. For these kinds of app, it will provide you some contents for Free and some content require to purchase, which will show Apple purchase popup.
-![In-app purchases features]({{ site.baseurl }}/images/20200414/sample-inapp-purchases-features.png)
+![In-app purchases features]({{ site.baseurl }}/assets/img/ios/sample-inapp-purchases-features.png)
 _**Figure 1: Sample In-app purchases features** *(source: developer.apple.com)*_
 
 Tap on one of the items, you will be asked for purchasing and showing Apple In-app purchases popup, might be like this:
 
-![In-app purchases popup]({{ site.baseurl }}/images/20200414/native-in-app-purchases-popup.png)
+![In-app purchases popup]({{ site.baseurl }}/assets/img/ios/native-in-app-purchases-popup.png)
 _**Figure 2: In-app purchases native popup**_
 
 Let's do some analysis ^_^
@@ -34,7 +31,7 @@ Let's do some analysis ^_^
 ## Static Analysis
 ### Inspect .ipa resources
 With the help of [Frida iOS Dump](https://github.com/AloneMonkey/frida-ios-dump){:target="_blank"} or [CrackerXI](https://forum.iphonecake.com/index.php?/topic/363020-crackerxi-gui-app-decryption-tool-for-ios-11-12-13/){:target="_blank"}, we can easily pull out **.ipa** file of REDACTED app on a jailbroken device, unzip **.ipa** and navigate to `Payload/REDACTED.app` folder. All of the app resources and binary files are inside this folder.
-![.ipa resources]({{ site.baseurl }}/images/20200414/ipa-resources.png)
+![.ipa resources]({{ site.baseurl }}/assets/img/ios/ipa-resources.png)
 _**Figure 3: .ipa resources**_
 
 Besides common resources you will see in other .ipa files, this one has a bit different. Look for `spine-lua`, `CoronaResources.bundle`, `resource.corona-archive`, it's CORONA!!! Don't get goosebumps please, this is not the kind of Coronavirus but Corona framework. [Corona](https://coronalabs.com/) is the 2D game engine, a cross-platform framework ideal for rapidly creating apps and games for mobile devices and desktop systems. That means you can create your project once and publish it to multiple types of devices, including Apple iPhone and iPad, Android phones and tablets, Amazon Fire, Mac Desktop, Windows Desktop, and even connected TVs such as Apple TV, Fire TV, and Android TV (from [coronalabs site](ttps://coronalabs.com/)). I will have another post to share the process of reversing Corona files soon, just leave these kinds of stuff for now.
@@ -55,7 +52,7 @@ As the above statement, if `transactionState` is `SKPaymentTransactionStatePurch
 
 We know the method name to look for - `func paymentQueue(_ queue: SKPaymentQueue, 
 updatedTransactions transactions: [SKPaymentTransaction])`, but if you look for this string in Hopper Disassembler, it won't spit out any matches. The reason is it's not a selector, so we need to search by selector name of this method, which could be `paymentQueue:updatedTransactions:`. Switch to Hopper and search this selector name in **Labels** tab, we can see one result matches `-[AppleStoreManager paymentQueue:updatedTransactions:]:`, which also mean class `AppleStoreManager` is the one conforms to `SKPaymentTransactionObserver` protocol and handle transactions.
-![paymentQueue:updatedTransactions: implementation]({{ site.baseurl }}/images/20200414/search-paymentQueue-updatedTransactions.png)
+![paymentQueue:updatedTransactions: implementation]({{ site.baseurl }}/assets/img/ios/search-paymentQueue-updatedTransactions.png)
 _**Figure 4: paymentQueue:updatedTransactions: implementation**_
 
 ### It's ARM64 again, let's swallow it 🥱
@@ -221,7 +218,7 @@ bl         imp___stubs__objc_msgSend ; objc_msgSend(transaction, @selector(trans
 And the result of `objc_msgSend(transaction, @selector(transactionState))` will be always stored in register `x0`, so after executing this instruction, register `x0` will hold value of `transaction.transactionState` or `SKPaymentTransactionState` type. 
 
 Next instruction `cmp  x0, #0x3` will compare `transactionState` with `#0x3` (3 in decimal) to decide which location to branch in next instruction `b.eq  loc_10000dee0`. It would make sense here to compare `SKPaymentTransactionState` type with number `3` because `SKPaymentTransactionState` is `enum` type and will use its raw value to compare with `3`.
-![SKPaymentTransactionState-enum]({{ site.baseurl }}/images/20200414/SKPaymentTransactionState-enum.png)
+![SKPaymentTransactionState-enum]({{ site.baseurl }}/assets/img/ios/SKPaymentTransactionState-enum.png)
 _**Figure 6: SKPaymentTransactionState enum**_
 
 From Apple implementation, `SKPaymentTransactionState` does not explicitly assign a raw value for each case, so the implicit value for each case is one more than the previous case. Because the first case `purchasing` doesn’t have a value set, its value is 0. It would be same as this:
@@ -236,7 +233,7 @@ public enum SKPaymentTransactionState : Int {
 ```
 
 Why does it need to bother with transaction state? Let have a look on below actions we usually do for each state:
-![transactionStates]({{ site.baseurl }}/images/20200414/transactionStates.png)
+![transactionStates]({{ site.baseurl }}/assets/img/ios/transactionStates.png)
 _**Figure 7: Transaction State action needed** *(source: WWDC)*_
 
 It makes more sense now, as you can see if the transaction state is `.purchased` or `.restored` the app should deliver the content to the user, then call `StoreKit` `finishTransaction` method to finish the transaction. So the app will check the transaction state and take corrective actions. 
