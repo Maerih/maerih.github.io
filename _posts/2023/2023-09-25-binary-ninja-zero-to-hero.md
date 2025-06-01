@@ -29,7 +29,7 @@ Binja is an extensive and intricate project, resulting in the development of num
 
 ### Decompiler
 Primarily, at the heart of a decompiler's functionality is its ability to do precisely that: decompile code. It's a fundamental expectation, after all. Within Binja, users can traverse binary code interactively, accessing disassembled code while making annotations as required. Binja provides multiple views, including disassembly, LILL, MLIL, HLIL, Pseudo-C, and SSA views. In forthcoming posts, I'll delve deeper into these views, and you'll come to appreciate their practical utility. At this stage, it's not essential to delve into the specifics of what each view offers. Typically, when starting, most users tend to primarily utilize disassembly and Pseudo-C views. These two perspectives provide a solid foundation for initial exploration and analysis.
-![Exemple of the decompiler's view](decomp.png)
+![Exemple of the decompiler's view](/assets/img/hero-1/decomp.png)
 _Exemple of the decompiler's view_
 
 ### Multi-architecture support
@@ -37,7 +37,7 @@ Another one of Binja's notable strengths lies in its extensive support for multi
 
 ### Control Flow Graph
 In the process of analyzing a function, understanding its flow is often crucial. Flow pertains to how the binary executes, depending on whether specific conditions are met or not. Binja offers a graphical representation of this control flow, which greatly facilitates tracking the execution path. This view serves multiple purposes, and a noteworthy example is the [Lighthouse](https://github.com/gaasedelen/lighthouse) plugin. Lighthouse is particularly valuable as it allows users to visualize the code coverage of a fuzzer on a binary.
-![Exemple of the CFG's view](graph.png)
+![Exemple of the CFG's view](/assets/img/hero-1/graph.png)
 _Exemple of the Control Flow Graph's view_
 
 ### Debugging
@@ -144,19 +144,19 @@ The term "single static assignment" refers to a property of the intermediate rep
 
 If I presented you this CFG and asked "what is the value of X?", your first question should be "which X?".
 
-![CFG without SSA](SSA_example1.1.png)
+![CFG without SSA](/assets/img/hero-2/SSA_example1.1.png)
 _CFG without SSA (taken from Wikipedia)_
 
 
 However, if I were to present this CFG in the SSA form and asked "What is the value of X2", you would be able to answer "2".
 
-![CFG with SSA](SSA_example1.2.png)
+![CFG with SSA](/assets/img/hero-2/SSA_example1.2.png)
 _CFG with SSA (taken from Wikipedia)_
 
 
 Now, you may observe the presence of "Y?" in the code. This is because, at times, a variable's value is contingent upon various branches, such as conditions and loops. In such instances, one might wonder about the variable's potential values. In these cases, you specify the two potential values within a Φ (Phi) function. In this context, the statement will create a fresh definition of Y, referred to as Y3, by "selecting" either Y1 or Y2 based on the previous control flow. 
 
-![CFG with SSA and phi](SSA_example1.3.png)
+![CFG with SSA and phi](/assets/img/hero-2/SSA_example1.3.png)
 _CFG with SSA and phi (taken from Wikipedia)_
 
 This feature is built-in Binja, and it's great. I'll showcase in future posts how you could use it. Here is what it looks like:
@@ -166,7 +166,7 @@ This feature is built-in Binja, and it's great. I'll showcase in future posts ho
 The stack view lives up to its name by providing a visual representation of the stack, although it differs from the typical debugger's stack view. Indeed, you won't see addresses or actual data, but rather the disposition of the stack.
 
 Here is a simple screenshot to illustrate what I am saying
-![Stack View](stack_view.png)
+![Stack View](/assets/img/hero-2/stack_view.png)
 _Stack View of a function_
 
 As evident, this display reveals the variable offsets within the stack, accompanied by their respective types and names. At 0x0, you can consistently locate the return address (eip/rip). The negative offsets pertain to local variables declared within the function, while the positive offsets correspond to non-local variables, frequently established through functions like malloc, calloc, and the like.
@@ -196,7 +196,7 @@ There are 19 default tags:
 - Jump to Malformed Target
 
 Among the available tags, you might find that "Bookmarks," "Bugs," "Crashes," or custom tags are the ones you use most frequently. However, if you require additional tag types, you can create them easily. To do this, navigate to the "Tags" section and access the "Tags type" view. From there, you can create a new tag type by right-clicking or using the shortcut Ctrl+i.
-![Tags](tags.png)
+![Tags](/assets/img/hero-2/tags.png)
 _How and where to create tags_
 
 With these fundamentals under your belt, you're well-equipped to dive into reverse engineering and pwn challenges using Binary Ninja! In your next post, we will explore additional plugins, delve into different views such as the *LIL and SSA, and unlock the full potential of Binary Ninja's UI with tools like the stack view, tags, and the memory map. Happy reversing and pwning!
