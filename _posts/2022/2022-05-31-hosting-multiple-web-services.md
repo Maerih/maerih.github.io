@@ -1,9 +1,10 @@
 ---
 layout: post
-title: Running multiple web services behind one public IP address
+title: Running multiple web services 
 description: With nginx, a domain name, and Let's Encrypt, all internal and external-facing web applications can use HTTPS — even on a home network
 categories:
 - Guides
+- Linux Administration
 tags:
 - nginx
 - Let's Encrypt
