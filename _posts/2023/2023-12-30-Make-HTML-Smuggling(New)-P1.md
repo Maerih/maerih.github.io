@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Make HTML Smuggling Great Again P1"
+title: "HTML Smuggling- added Features"
 date: 2023-12-30
 categories: security html
 ---
