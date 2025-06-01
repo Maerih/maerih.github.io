@@ -83,13 +83,7 @@ curl -k -XPOST -d "user=admin&password=12345" http://127.0.0.1:5000
 
 ---
 
----
-layout: post
-title: My Advanced Bash Cheat Sheet
-date: 2021-02-17 16:19 -0400
-categories: [Cheat Sheet]
-tags: [bash, cheat sheet]
----
+
 
 Here are some of the more "advanced" concepts of using Bash. This has more of a pentesting lean, since that's kind of what I do. Still though, I'm sure a lot of people could take something out of this as well. But before I get into the really fun stuff, I need to outline some of the basics.
 
