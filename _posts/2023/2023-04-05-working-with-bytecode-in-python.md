@@ -1,399 +1,707 @@
 ---
 layout: post
-title: Bytecode with Python
-date: 2023-04-05 09:50 -0400
+title: Pwntools Tricks
+date: 2023-09-12 16:12 -0400
 categories: [Python]
-tags: [cheat sheet, python, bytecode, hex, bytes]
+tags: [cheat sheet, python, hacking, binary exploitation]
 ---
 
-In my experience and personal opinion, Python is the best language by far for needling around with literal bits and bytes when you need that level of control of your data. To me, it's just an easier environment to work in. If you're doing any sort of binary exploitation, you already have `pwntools` to help you out there. But even if you're not and you'd just like to do some work in simple bytecode (something that tends to happen quite a bit when you're working your way through a CTF), Python is probably one of the best manipulators of datastreams that I can think of. When I first learned about binary exploitation, most of my tutorials explained how to modify bytes using Perl. Thank God we've moved past that into a more _sensible_ language.
+Pwntools is a set of utilities and helpful shortcuts for exploiting vulnerable binaries, but it has its merits for additional tools and utilities too. Things like easily packing and unpacking data without having to import the `struct` library, sending arbitrary data through a data "tube" which could be directly interacting with a local binary to communicating with a remote binary over ssh. You can even interact fairly easily over a net socket without having to deal with all the overhead of doing it manually. In fact, that's a majority of pwntools: utilities that get rid of allllll the overhead.
 
-Now my goal here is to write a cheat sheet of sorts so I have something to refer back to when I am ultimately up against working with bytecode again, since for some reason this is one of those things where I'll know absolutely everything about it one day, I'll put it away for a few months, then when I need to come back to it I completely forget how to do basic things. I hope to use this as a quick refresher so I can just jump back into it when I need to. Hopefully.
+I'm not an expert, but learning as much as I can, and the only way I really can learn it is by playing with CTF challenges and the like. Now the scope of this document will be [Pwntools](https://github.com/Gallopsled/pwntools) only, not binary exploitation per se. One day I may write something about that, but honestly I'm still learning. As of this writing, I _get_ it, I just don't _get_ it. Not completely anyway. The basic concepts make sense to me, but all of the "well obviously in this case you'd do such-and-such" instinctive perceptions one would get from being old hat at this haven't quite made their way into my noodle yet.
 
-## The Basics - Built-in Functions
+Now, more to the point here, Pwntools is a fantastic set of tools in python that are specifically designed to assist in exploit development. Learning how to exploit a binary _without_ pwntools is probably the best way of learning it, but pwntools just makes all the tedious tasks that much easier to accomplish. So full disclaimer: if you don't know the concept of how pwntools can do something, then you really should attempt to learn it without pwntools because otherwise it just seems like magic.
 
-Firstly, let's discuss the `bytes()` built-in function.
+Anyway, yes. Pwntools. A library of cutting-through-the-BS. What I don't know about it can fill a book. But what I _do_ know can fit on this webpage, so I'm just going to make a little cheat sheet of things you can do in Pwntools and techniques I've discovered. I'm writing it down here and updating as I go so it doesn't get lost in my pages and pages of Onenote documents. Plus it helps me learn if I write about it as if I know it inside and out. Here we go.
 
-### bytes()
+## The Template
 
-This function returns an immutable bytestring. Can be useful for returning a result or just dumping a literal representation of a number. Remember, a byte is basically an integer. The `bytes()` function can be used in several ways, but the two ways I've used the most are to return either a series of null bytes as long as you require, or a single byte of the raw value. The difference in how they are used relate to whether you ask for a single integer or a list of integers, where a list of integers will return the bytestring of exactly those numbers in raw binary form, here represented as hexidecimal:
+Pwntools comes with a fancy way to create a template to work with. It's pretty useful, albeit fairly verbose. You can use the standard pwntools template by running the following command:
 
-```python
-myNullBytes = bytes(5)
-# myNullByte = b'\x00\x00\x00\x00\x00'
-
-mySpecificByte = bytes([5])
-# mySpecificByte = b'\x05'
-
-bunchaBytes = bytes([5, 10, 15, 20])
-# bunchaBytes = b'\x05\n\x0f\x14'
-```
-> Note: `\x0a` in ascii is LF (Line Feed), or here represented as `\n`. Additionally, for those that aren't as familiar with Python, a string denoted with the `b` prefix is a _bytestring_.
-{: .prompt-info}
-
-> Watch out though, if you choose a number greater than `256` it will throw an error. It is a single byte after all.
-{: .prompt-warning}
-
-You can also convert bytes to and from hex, but I'll put that in the `Conversions` section.
-
-### bytearray()
-
-A bytearray is pretty self-explanatory. While the `bytes()` function returns an immutable binary number, the `bytesarray()` function will return a mutable object which can be manipulated. Additionally, it can accept a raw string as long as you specify the encoding!
-
-```python
-ba = bytearray([5, 10, 15, 20])
-# ba = bytearray(b'\x05\n\x0f\x14')
-
-# bytearray will act like a list, and thus can be appended to and modified!
-ba[1] = 11
-ba[2] += 2
-# ba = bytearray(b'\x05\x0b\x11\x14')
-
-ba.append(25)
-# ba = bytearray(b'\x05\x0b\x11\x14\x19')
-
-# You can also create a bytearray from a string with an encoding
-ba = bytearray("Hello, World!", "utf-8")
-# ba = bytearray(b'Hello, World!')
-
-# Then, since each index in the bytearray is technically an integer,
-# you can do arithmetic on it!
-ba[5] += 10
-# ba = bytearray(b'Hello; World!')
+```terminal
+$ pwn template ./local_binary > exploit.py
 ```
 
-### zip()
+This generates a boilerplate template that sets everything up for you. Loads up the executable as a pwn.ELF (or whatever), sets up the potential to run it in `gdb`, and sets up the context of the binary such as what architecture, the endianness, etc. If you are using it to connect to a remote service you can specify it here like so:
 
-This function isn't necessarily used specifically for working with individual bytes, but you'd be surprised just how often this function comes in handy when combining two bytestrings. `zip()` will take two lists and allow you to iterate over both items at the same index, one by one. This especially comes in handy for `XOR` functions. If you want to `XOR` two bytestrings together, `zip()` to the rescue!
-
-```python
-plaintext = bytearray("Super secret password", "utf-8")
-encryption_key = b's3cr3ts3cr3ts3cr3ts3cr3t'
-
-ciphertext = bytes([x^y for x,y in zip(plaintext, encryption_key)])
-
-# ciphertext is b' F\x13\x17\x17T\x00V\x00\x00\x00\x00SC\x02\x01\x16\x03\x1cA\x07'
-
-# Now let's decrypt!
-decrypted = bytes([x^y for x,y in zip(ciphertext, encryption_key)])
-# decrypted = b'Super secret password'
-```
-> Note: if both lists being zipped are different sizes, `zip()` will stop iterating once the end of the shortest list is reached.
-{: .prompt-info}
-> Warning: do not use this for encryption. This is bad, bad encryption. But still cool.
-{: .prompt-warning}
-
-### ord()
-
-The ordinal of a character is its decimal representation.
-
-```python
-ord('b')
-# 98
-```
-> Note: only accepts one character. Will throw an error if multiple characters are referenced.
-{: .prompt-info}
-
-### chr()
-
-The `chr()` function accepts an integer less than or equal to `65535` and returns the character that number represents. Note that `utf-8` is only one byte long, so anything greater than 255 will be a unicode character.
-
-```python
-chr(10940)
-# ⪼
-
-ord('⪼')
-# 10940
+```terminal
+$ pwn template --host=pwn.example.com --port=34828 --libc=./libc.6.so --quiet ./local_binary > exploit.py
 ```
 
-## Conversions
+Now you can call the script in fancy ways, such as if you want to only connect to the local binary instead of the remote one listed by sending arguments, and then connect the output to GDB:
 
-Sometimes conversions are necessary, whether you're converting from binary to hex, to base64, or anything inbetween. Here's how to do them.
-
-### Decode/Encode text from/to bytecode
-
-I always forget which is which, but I'm saying it here: To convert strings to bytestrings, you have to _encode_ them. To convert bytestrings to strings, you have to _decode_ them. So in practice:
-
-```python
-byte_string = b'some string'
-reg_string = 'another string'
-
-print(byte_string.decode('utf-8'))
-# "some string"
-
-print(reg_string.encode('utf-8'))
-# b"another string"
+```terminal
+$ python3 exploit.py LOCAL LOCAL_LIBC GDB
 ```
 
-### Convert to hex
-
-You can convert any byte or bytearray into hex by using the `bytes.hex()` function. This comes in handy pretty often!
+That `--quiet` flag is key. Without it, it will print a bunch of additional annotation which I think is fairly pointless. It's pretty great but sometimes I like to approach things with a clearer head since the template it builds for you looks quite a bit cluttered. Sure there's an area at the bottom where it explicitly states to write your code here, but this template works for me too:
 
 ```python
-x = bytes([90])
-x.hex()
+#!/usr/bin/env python3
 
-# '5a'
-
-y = bytearray("Hello there, young padawan", "utf-8")
-y.hex()
-
-# '48656c6c6f20746865726520796f756e67207061646177616e'
-```
-> Note: This will return a string of hex characters, not a hex number!
-{: .prompt-info}
-
-You can also convert a string to hex using the `binascii` library.
-
-```python
-import binascii
-
-username = binascii.hexlify(b'admin')
-# '61646d696e'
-```
-
-### Convert from hex
-
-Converting from hex is just as easy. Note that this accepts a hex string!
-
-```python
-msg = "6b656570206861636b696e27"
-
-bytes.fromhex(msg)
-# b"keep hackin'"
-```
-
-You can _also_ use the built-in `hex()` function, but note that this will prepend the notation of `0x` in front of the number, which can cause some problems for things that aren't expecting it.
-
-```python
-hex(99)
-# '0x63'
-
-# You can just chop it off, but it is kludgy. Though it does work.
-hex(99)[2:]
-# '63'
-```
-
-### Base64
-
-I have a potentially unhealthy obsession with Base-64. It's a cool idea that you can take any string of bytes, even a full executable file, and convert it into printable characters. You can store those printable characters anywhere, even in your clipboard! Just paste it through a decode method and presto, there's your data. I will show how to do this in Python, but sometimes it's more practical to use the `base64` binary on Linux/MacOS systems, or for the more Microsoft-leaning among us, `[Convert]::ToBase64String($SomeBytestringStoredAsVariable)`. Powershell is a bit more verbose than most.
-
-Of course, you can always just use [CyberChef](https://gchq.github.io/CyberChef/).
-
-#### Convert to Base64
-
-```python
-import base64
-
-base64.b64encode(b'some string')
-
-# b'c29tZSBzdHJpbmc='
-```
-
-#### Convert from Base64
-
-```python
-import base64
-
-my_code = b'c29tZSBzdHJpbmc='
-
-base64.b64decode(my_code)
-
-# b'some string'
-```
-> Note: `b64encode`/`b64decode` both take byte strings as input. Use the above encode/decode to convert from a string.
-{: .prompt-info}
-
-## Endianness
-
-### Python struct
-
-Ah, the good ol' `struct` library. Can be extremely confusing, but also entirely necessary if `pwntools` aren't handy. When you're dealing with endianness, struct is your best friend. Let's say for example that you'd like to print our good friend `0xdeadbeef` in little endian. Sure you can do it manually:
-
-#### Packing
-
-```python
-print("\xef\xbe\xad\xde")
-```
-
-Or you can let `struct` do it for you!
-
-```python
-import struct
-
-my_bytes = struct.pack("<I", 0xdeadbeef)
-print(my_bytes)
-```
-
-Now let's break down what just happened. the `struct.pack()` function takes (at least) two arguments. The first argument is the _format_, while the second argument is the actual data. The format is kinda funky, but given my general usage, I have only really needed to use two types, and for other formats you can look those up yourself. First of all, `<` is the symbol for **little endian**. Contrarily, `>` is the symbol for **big endian**. The second character is the format character, and in this case, `I` refers to an **unsigned integer**, which means the left-most byte is _not_ a flag for a positive or negative number, but rather just part of the number.
-
-#### Unpacking
-
-Unpacking is useful when you are trying to obtain the raw number stored in the bytestring. This can be useful if you are trying to read CBC padding, as proper padding will end with a series of numbers of how many bytes needed to be padded. If `\x04` shows up, you can use the `struct.unpack()` function to read in the raw digit(s).
-
-```python
-result = struct.unpack("B", b'\x04')[0]
-
-print(result)
-# 4
-
-beef = struct.unpack("<I", b'\xef\xbe\xad\xde')[0]
-print(beef)
-# 3735928559
-```
-> Note: `struct.unpack()` returns a tuple, so most of the time you'd probably want the first result, hence the `[0]`. Additionally, `B` refers to an unsigned char. Since this is clearly a large integer I had to change it to `I`, and noted that it was little endian.
-{: .prompt-info}
-
-## Pwntools
-
-Now I want to make something clear here, pwntools is like wheeling out the entire toolchest when all you need is a wrench. But let me tell you, this toolchest has some of the best libraries available to you. Note that [pwntools](https://docs.pwntools.com/en/stable/) is most likely not installed by default wherever you are, so you'll have to do the legwork of actually installing it (see their site). But once it does, it's hard _not_ to use some of their functions. It takes a lot of the guesswork out of things like arguments, endianness, etc. They're all there for you.
-
-I want to also state that this isn't meant to be a tutorial on how to exploit binaries with pwntools, that is way out of scope. But for the sake of utility, I can't write this cheat sheet _without_ mentioning pwntools. And this is taken mostly from their site, so you should probably go there to learn more about it. But for my own edification, here it is.
-
-### Hashing
-
-```python
 from pwn import *
 
-md5sumhex('hello')
-# '5d41402abc4b2a76b9719d911017c592'
+BINARY = './local_binary'
+HOST = 'pwn.example.com'
+PORT = 52143
 
-sha1sumhex('hello')
-# 'aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d'
+exe = context.binary = ELF(BINARY)
+
+rop = ROP(exe)
+libc = exe.libc
+
+# p = connect(HOST, PORT)
+p = process(BINARY)
+
+# Put exploit code here
 ```
 
-### URL Encoding
+That should be enough to get me started.
+
+> Note: From this point forward, I will use the `p` variable to refer to the binary process I am exploiting.
+{: .prompt-info } 
+
+## Context
+
+When dealing with pwntools, context truly is everything. Pwntools needs to know the endianness and architecture, as well as whether or not we're dealing with any built-in securities. Additionally, the context tells pwntools how _you_ prefer to have your local setup, which includes the ability to open and attach a `gdb` debugging window alongside your interactive window. You can specify the context you want, or you can have pwntools inspect the binary in question automatically.
+
+### Automatically Obtain Context
+
+The standard way I do it is with the following line:
 
 ```python
-from pwn import *
+BINARY = "./vuln"
+exe = context.binary = ELF(BINARY)
 
-urlencode("Hello, World!")
-# '%48%65%6c%6c%6f%2c%20%57%6f%72%6c%64%21'
+p = exe.process()
 ```
+This sets up a pretty important variable, `exe`. From here you can create a new variable, in this case `p`, which you point to the process. Of course you can also create `libc = exe.libc` and get the libc object as well, if there is any.
 
-### Convert to/from bits
+What's important to know here is that the `exe` variable now knows how to handle packing data based on the executable's architecture. If it's 64-bit, you don't have to use `p64()`, you can just use `pack()`. It knows the endianness and can adjust accordingly.
+
+### Manual Context
+
+You can set attributes to apply to the context as you see fit here.
 
 ```python
-from pwn import *
+# Specify one attribute with dot-notation
+context.log_level = 'DEBUG'
 
-bits('A')
-# [0, 0, 0, 1, 0, 1, 0, 1]
+# Specify many attributes
+context(os="linux", arch="amd64", endian="little")
 
-unbits([0, 0, 0, 1, 0, 1, 0, 1])
-# 'A'
+# Specify GDB Through Tmux vertically
+context.terminal = ['tmux', 'splitw', '-v']
 ```
 
-### Packing and Unpacking
+## Working With Tubes
 
-Probably one of the most useful things that pwntools does (and does well) is make it extremely simple to pack and unpack values into a bytestring. In fact, you can even specify the endianness of the environment once and not have to worry about specifying it all the time. For that, you can use specific functions.
+Now obviously you can read all about how to interact with tubes in their documentation, but here's just a few things I use and the caveats I discovered.
+
+### Receiving
+
+How to get data from the process.
+
+#### Receive a Line
+You can receive one line at a time and call this as many times as necessary, but note that this will block if there isn't a newline or `\x00` in the receive queue, OR if you are receiving lines that aren't in the queue and it turns out the application is waiting on user input:
 
 ```python
-from pwn import *
-context.endian = "little"
-
-my_bytes = 0xdeadbeef
-
-pack(my_bytes)
-# b'\xef\xbe\xad\xde'
-
-# You can even specify the size of the data. It will
-# pad the data with null bytes if it doesn't fit!
-# For this example, we'll use a 64-bit string
-p64(my_bytes)
-# b'\xef\xbe\xad\xde\x00\x00\x00\x00'
+p.recvline()
 ```
-
-There is also `p8()` and `p16()` for packing 8 and 16 bits, respectively. Though in this instance it would error out because this bytestring is 32 bits long.
-
-## Manipulate Bits with Math
-
-I can't end this without mentioning bitwise arithmetic. Utilizing standard bitwise math can help you modify individual bits within a byte without having to do any weird list breakouts and re-assembling. Sometimes you just want to flip a single bit in a byte, and the easiest way to do that is using some fancy logical operators. I talk about some of this in my [PRNG and why you should tread lightly]({% post_url 2021-03-21-pseudo-random-number-generators-and-why-you-should-tread-lightly %}) page, but I'll just mention some of the easier methods used for bit flipping and such.
-
-And yeah, if you already know about logical arithmetic then you can probably skip this section.
-
-### AND'ing Will Copy or Zero
-
-You can use the AND (&) operator to either copy a portion of a byte, or completely zero out a byte:
+If you want, you can set a timeout to ensure that it doesn't block indefinitely:
 
 ```python
-myNumber = 0b00110011
+p.recvline(timeout=5)
+```
+This way, if it hits a brick wall, it will time out after 5 seconds and the rest of your code can process normally. But really if that happens you might have other problems than not dealing with the input queue properly.
 
-# if I only want to copy the left-most 4 digits but return
-# zeros for the right-most, I can AND it by 11110000:
+You can call that as many times as newlines you are expecting, or just run `p.clean()`. This will output data as well, so if you are expecting an address in this data, you can parse it using squirrelly python ways, which I'll get into later.
 
-leftMost = 0b11110000
+#### Receive Until
 
-copiedLeft = myNumber & leftMost
-# copiedLeft = 0b00110000
+If you know what the program will output, such as a prompt, you can receive data until you hit exactly that line. For instance, if the program prints out the following text:
+
+```
+Welcome to my challenge!
+Please enter a number: 
 ```
 
-Or you can completely zero out all or a portion of a byte by AND'ing it with all zeroes.
+You can receive until the `:` or even the word `number:`. This usually preceeds a sending of data.
 
 ```python
-myNumber = 0b00110011
-
-FlipToZero = 0b00000000
-# aka FlipToZero = 0b0
-
-myNumber &= FlipToZero
-# Remember that the &= is equivalent to saying:
-# myNumber = myNumber & FlipToZero
-# so myNumber = 0b00000000
+p.recvuntil(b':')
 ```
 
-### OR'ing will Flip to All Ones or Copy
+#### Receive N Bytes
 
-You can use a logical OR to flip something to all ones, or copy similar to the AND function.
+If you're expecting a certain amount of bytes to read in, such as if you leaked an address and you know it's 8 bytes long, you can tell pwntools to only receive `N` bytes, but be careful that this will block until as many bytes are read in:
 
 ```python
-myNumber = 0b00110011
-
-# to flip the right-most portion of this byte to all 1's,
-# you can OR this number with the following
-FlipRightToOnes = 0b00001111
-
-myNumber |= FlipRightToOnes
-# Now myNumber = 0b00111111
+p.recv(8)
 ```
 
-### XOR'ing a Number by Itself Will Return Zero
+#### Receive and Close
 
-AKA eXclusive OR. This is generally useful in things like Assembly when you need to zero out a register or something, but hey it works in python in a pinch.
+This just receives everything until an EOF is discovered, then shuts it all down afterwards. Good to use as the last command to ensure the binary spits out what it has and then closes the connection. This will block until EOF is reached though, so this is kind of a method of getting all data regardless.
 
 ```python
-myNumber = 0b00110011
-
-myNumber ^= myNumber
-# Now myNumber = 0b00000000
+p.recvall()
 ```
 
-And of course, XOR is a fundamental aspect of cryptography, but still it's worth noting that it can flip a value straight to zero.
+#### Receive and Clear the Queue
 
-### Shifting Left and Right
-
-Bit Shifting will move all bits left, padding the right side with zeroes, and shifting right will move all bits to the right. Simple as that.
+This won't sever the connection, but instead clears out all data queued up to receive by and puts you current in the execution process.
 
 ```python
-myNumber = 0b00110011
-
-# Shift everything to the left by 2
-myNumber <<= 2
-# myNumber = 0b11001100
-
-# Shift it back to the right by 2 again
-myNumber >>= 2
-# myNumber = 0b00110011
-
-# So for fun, we can now move everything to the left
-# and fill in with ones using OR.
-
-myNumber <<= 2
-# myNumber = 0b11001100
-
-myNumber |= 0b11
-# myNumber = 0b11001111
+p.clean()
 ```
+
+### Sending
+
+There really isn't much to sending data. You can send data, or send data followed by a newline.
+
+#### Arbitrary Send
+
+Send whatever data you want to the process.
+
+```python
+p.send(b"Just make sure it's a byte string!")
+```
+
+#### Send with Newline
+
+This is a matter of convenience. Makes sure a newline follows the data. Useful for sending raw input to a process that is expecting you to hit enter once you send it something.
+
+```python
+p.sendline(b"Again, make sure it's a byte string!")
+```
+Of course, there are quite a few ways to send data with all sorts of weird functions such as `sendlinethen()`, which is a combination of `sendline()` followed by `recvuntil()`. In fact:
+
+#### Send Line and Then...
+
+You can send a line and then wait for a delimiter to shave off a couple lines of code:
+
+```python
+p.sendlinethen(b':', payload)
+```
+The above will send the contents of the `payload` variable, then wait until it hits a `:`.
+
+## Extracting Data from Output
+
+Sometimes you need to formulate the output of data that you received into something you can work with, like an address for example. Take this example, something from a picoCTF challenge:
+
+```c
+// snip...
+void setup() {
+        setvbuf(stdin, NULL, _IONBF, 0);
+        setvbuf(stdout, NULL, _IONBF, 0);
+        setvbuf(stderr, NULL, _IONBF, 0);
+}
+
+void hello() {
+        puts("Howdy gamers!");
+        printf("Okay I'll be nice. Here's the address of setvbuf in libc: %p\n", &setvbuf);
+}
+// snip...
+```
+
+This will print out the memory location of the `setvbuf()` function in libc. Or rather, the address in the GOT (Global Offset Table). This is some pretty useful information to have! We'll peel that off of STDOUT and convert that hex address into a number we can use in python.
+
+```python
+p.recvuntil(b':')
+string_addr = p.recvline()
+
+# Our variable should contain ' 0xAAAABBBB\n', 
+# only an actual number. Strip off the
+# remaining cruft
+string_addr = string_addr.strip()
+
+# Now convert it to a hexidecimal number, it
+# doesn't matter if it starts with an '0x',
+# the int() function will know what we're
+# looking at since we're specifying base-16.
+vbuf_addr = int(string_addr, 16)
+```
+
+## Alignment
+
+Sometimes the data you are sending is less than expected for packing and unpacking. This doesn't work too well in terms of alignment, especially if each item on the stack is 8 bytes and your payload is only 4. The first thing that comes to mind here is in the event that you have a format string exploit point and you want to leak the absolute address in the GOT. In this case, you can always left-justify your payload with the `.ljust()` string/bytestring function and pack the rest with null bytes.
+
+```python
+payload = (b'%%%d$s' % i + b'AAAA') + p64(absolute_address_of_GOT_entry)
+p.sendline(payload)
+addr = p.recvline().split(b'AAAA')[0].ljust(8, b'\x00')
+```
+
+## Logging
+
+Pwntools comes with a handy way to log things. It's just a nice way to display what you've found, but you can also do some nifty python trickery since throwing an error will throw a Pwntools exception.
+
+```python
+info("Here's some information")
+# [*] Here's some information
+
+warn("Uh oh, here's something to watch out for.")
+# [!] Uh oh, here's something to watch out for.
+
+debug("This won't show up unless your logging context is set to debug")
+# [DEBUG] This won't show up unless your logging context is set to debug
+
+error("Something went horribly wrong! Stop processing!")
+# Throws a PwnlibException
+```
+
+### Log to a log file
+
+You can set the context to log everything to a log file, if that's your thing.
+
+```python
+context.log_file = "output.log"
+```
+
+### Progress ticker
+
+As of this writing I don't believe any functionality has been written for an arbitrary progress throbber, but until then this works just as well:
+
+```python
+with log.progress("Doing stuff") as p:
+    for i in range(10):
+        # Do stuff...
+        p.status("currently doing xyz...")
+        if abc = true:
+            p.success("Finished doing xyz successfully.")
+        elif xyz < 100:
+            p.failure("Couldn't do it!")
+    
+    p.failure("Timeout")
+```
+
+### Stifling Logging
+
+Sometimes it is worthwhile to stifle logging. Pwntools will log to `info` level logging by default, which means whenever an ELF file is loaded it will dump all the security features the file has, which can be problematic if you're opening it up and closing it down over and over again. To handle that, I set the default log level to `warn` and only log that level for things I care about.
+
+```python
+exe = context.binary = ELF("./vuln")
+context.log_level = 'warn'
+
+# Note: This checks for stack stability, ensuring the 20th value on the
+# stack is the same value if I start up the program 20 times in a row
+
+for i in range(10):
+    p = exe.process()
+    payload = (b'%20$p')
+    p.sendline(payload)
+    val = p.recvline()
+    warn(f"Iter {i}, Result: {val}")
+```
+
+## Packing and Unpacking
+
+When you're sending data to be injected directly onto the stack (or elsewhere), you have to make sure the number you put in is the proper endianness of the target binary. This is a pretty useful utility because it's always easier than doing it yourself.
+
+### Packing
+
+To pack a binary in various architectures:
+
+```python
+my8bitval = p8(0xff)
+my16bitval = p16(0xbabe)
+my32bitval = p32(0xdeadbeef)
+my64bitval = p64(0xdeadcafebeefbabe)
+```
+
+But it will also just pay attention to whatever context you set the application to.
+
+```python
+context.update(
+    arch="amd64",
+    bits=64,
+    endian="little"
+)
+
+myval = pack(0xdeadcafebeefbabe)
+# b'\xbe\xba\xef\xbe\xfe\xca\xad\xde'
+```
+
+### Unpacking
+
+If you want to do the opposite, such as if you are reading directly off of memory and its endianness is annoying to work with, you can unpack it similar to the above. If you don't want to play a guessing game, just set the context ahead of time.
+
+```python
+context.update(
+    arch="amd64",
+    bits=64,
+    endian="little"
+)
+
+myPackedVal = b'\xbe\xba\xef\xbe\xfe\xca\xad\xde'
+myUnPackedVal = unpack(myPackedVal)
+# 16045704242864831166
+# or...
+hex(myUnPackedVal)
+# 0xdeadcafebeefbabe
+```
+
+## Overflowing
+
+First thing's first, you need to find an overflow point. This is just standard in the binary exploitation process, look for any user input field, whether it's through an argument, an environment variable, or through STDIN, and attempt to send it more data than it expects. If it segfaults, it can most likely be overflowed. Once you find that point, you need to find the offset of exactly where it flows into a known register you'd like to control. 
+
+> If it's i386, you generally want to find out the offset to overflow the `EIP` (Enhanced Instruction Pointer) register. If it's x86_64, you want to find out what overflows into the `RSP`, which is the Stack Pointer register.
+{: .prompt-info }
+
+Once you determine the overflow point, you can use pwntools to create a [De Bruijn sequence](https://en.wikipedia.org/wiki/De_Bruijn_sequence) using the command line to generate one.
+
+```terminal
+$ pwn cyclic 150
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaas...
+```
+
+Truncated the above for aesthetics. The `150` is the generated length, you want something large enough to overflow whatever buffer you're testing. If you don't add the length, it will dump every single 8-byte combination, which will be tremendous.
+
+After reviewing what register the pattern overflows to (depending on your architecture), you can copy the pattern in that register (or wherever) into the following command:
+
+```terminal
+$ pwn cyclic -l jaaakaaa
+36
+```
+
+In the above, I used the offset discovered in `RSP` (in this case, `jaaakaaa`) to determine that the offset is `36` characters. I can use this value to overflow and insert whatever address I'd want.
+
+### Creating the Overflow Payload
+
+Assuming the above example with an offset of `36`, I can go about this in two ways. To build this however, let's assume that the code below leads up to the overflow point.
+
+```python
+
+OFFSET = 36
+
+payload = b'A'*OFFSET
+payload += p64(0xdeadbeef)
+p.sendline(payload)
+```
+
+...or, I can use the pwntools `flat()` function to do the exact same thing.
+
+```python
+
+OFFSET = 36
+
+payload = flat({OFFSET: 0xdeadbeef})
+p.sendline(payload)
+```
+> Note: No need to pack the payload in the `flat()` function, pwntools will figure out the endianness for you based on the context you've specified at the beginning of the code!
+{: .prompt-info }
+
+And I can do you one better, if you know the offset pattern, you don't even need to add the offset number.
+
+```python
+
+payload = flat({'jaaakaaa': 0xdeadbeef})
+p.sendline(payload)
+```
+
+You can even do more than one, just know that the offset number is the number from the first entrypoint, not "since the last offset."
+
+```python
+
+payload = flat({
+    'jaaakaaa': 0xdeadbeef,
+    95        : 0xdeadc0de
+})
+p.sendline(payload)
+```
+
+The `flat()` function takes a dictionary of items, where the key of each item is expected to be an integer to pad data with, followed by a value to place after the padded data. You can add as many values as you like here, it will be dealt with in order.
+
+## Format String Exploitation
+
+In the event that you have a format string vulnerability, there are basically two major things you can do with this. First, you can dump values off of the stack and potentially dereference pointers and leak values, and second you can also write to an arbitrary place in memory. So let's discuss both.
+
+### Find the Format String Offset
+
+First thing is first, we should find the offset of the exploit. To briefly talk about what a format string vulnerability is, it is when someone accidentally allows a user to control the value being printed explictly through a `printf()` or `sprintf()` function. So:
+
+Good usage:
+```c
+char name[] = "Agr0";
+
+printf("Hello, my name is %s.\n", *name);
+```
+
+Bad usage:
+```c
+printf(user_input)
+```
+
+Because the variable `user_input` is assumed that we control it, we can pass in format string modifiers into the string and read values off the stack. Since `printf()` expects arguments to be taken from the stack it happily allows you to arbitrarily read items using things like:
+
+```text
+%p - Value off the stack.
+%x - Hexidecimal value off the stack.
+%d - Digit off the stack.
+%c - Character off the stack.
+%s - String from a pointer off the stack.
+```
+
+And you can look at specific arguments by using the following syntax:
+
+```text
+%5$p - Read the 5th address off the stack.
+%10$s - Dereference the 10th address off the stack and print as a string. This can be useful!
+```
+
+Then of course there is the `%n` modifier, which allows you to write data into any place in memory that is writable. Getting into exactly how this works is outside of the scope of this document since this is just a pwntools cheatsheet, but in order to write data to places in memory, this is the modifier that does it. And yes, I firmly believe this modifier was created with the sole purpose of being exploitable because I can't find any reason to use it.
+
+### Determining the Offset
+
+You can do this manually by adding a bunch of `%p.%p.%p.%p....` and counting the output until you see `0x25702e25.0x70232570.`, since that is the hex representation of the string we entered, but it's just cooler to find the offset automatically using pwntools.
+
+First, you need to set up a function whose sole purpose is to send whatever it's given as an argument as the payload to the format string attack and return the result.
+
+```python
+def fmt_exploit(payload):
+    p = process("./vuln")
+    p.recvline()
+    p.sendline(payload)
+    return p.recvall()
+```
+
+Note that the above function should match whatever application you're using, don't just copy this verbatim. This is meant as an example, so make sure this function does exactly what I said above.
+
+Now we can tell pwntools to find the offset with just one line of code.
+
+```python
+format_string = FmtStr(execute_fmt=fmt_exploit)
+```
+
+This takes the function as an argument and attacks it over and over again until it can read it's own value in the returned data, determining the offset automatically.
+
+```python
+format_string.offset # This will be the offset value.
+```
+
+### Overwriting Values
+
+With the `fmtstr_payload()` function, we can generate a payload that will write any arbitrary data into any arbitrary address. We can do this multiple times, too. It takes in a dict value with a `{from_addr: to_addr}` syntax:
+
+```python
+from_addr = 0xdeadbeef # The address I want to write to
+to_addr = 0xcafebabe   # The data I want to put there
+
+payload = fmtstr_payload(format_string.offset: {from_addr: to_addr})
+
+p.sendline(payload)
+```
+
+## Shellcode
+
+Generally speaking, most of the time I'm going to pull shellcode off of [Shell-Storm](https://shell-storm.org) or [Exploit-DB](https://exploit-db.com) if I ever have a place where I can execute it, such as if NX/DEP is not enabled (in which case I can stuff it onto the stack), or if I can somehow run an `mprotect()` syscall and define a place in memory that I can put it, but the neato thing about pwntools is that if you want to run a specific task that you'd want the binary you're exploiting to perform, you can craft (and chain!) your own shellcode using the `shellcraft` module. This is neat if you have the space and flexibility, but if you're looking for shellcode of a specific size then it might be worthwhile to start digging around Shell-Storm or Exploit-DB rather than use the built-in "execute-and-drop-to-a-shell" function as found in pwntools.
+
+Still though, if you're still into making your own shellcode, the shellcraft module can certainly help you out.
+
+> Make sure your context is set to the proper architecture or else this could error out!
+{: .prompt-warning }
+
+One such payload comes to mind when I had to set the `setreuid()` function to a specific user before I execute a shell, otherwise I will be the current user, and not the SUID'd user.
+
+```python
+shellcode = shellcraft.amd64.linux.setreuid(10003)
+shellcode += shellcraft.amd64.linux.sh()
+```
+
+Now one thing to note is that if you print out the `shellcode` variable, it will print the human-readable assembly code. To send this as a payload, you have to wrap it in the `asm()` function.
+
+```python
+p.sendline(
+    flat({
+        36: asm(shellcode),
+        36+len(asm(shellcode)): 0xdecafbad
+    })
+)
+```
+Flexing a little bit on the calculations there. But this will add a packed `0xdecafbad` to the end of the shellcode. Note that I don't need to explicitly pack this value, `flat()` will handle the endianness for me based on the context of the binary.
+
+### Straight Up Assembly
+
+Of course you can just type up raw assembly and pwntools will happily convert it to raw bytecode. Ordinarily [Defuse's online assembler/disassembler](https://defuse.ca/online-x86-assembler.htm) has always been my goto, but this is pretty neat regardless.
+
+With the `asm()` function, you can just convert any old assembly code with ease:
+
+```python
+random_shellcode = asm("""
+dec rax
+xor rdi, rdi
+push rsp
+syscall
+""")
+
+# b'H\xff\xc8H1\xffT\x0f\x05'
+```
+
+> Note: the above is nonsensical and won't actually do anything. Just random instructions.
+{: .prompt-info }
+
+## ROP Chains
+
+If you give pwntools a good review from their documentation, you'd be surprised at exactly what you can do with their built-in ROP chain handler. But before I go on, I'd like to go over some of the basics when it comes to using ROP gadgets. The "manual" way is to run the binary through an external application like `ropper` or `ROPGadget` to dump a list of gadgets we can use. It will list a bunch of rudimentary functions that all end in a `ret` command, which allows you to return back to where you called the gadget entirely. _However_ it's important to know that a gadget found using any of these applications will print out the _offset_ of the binary where that gadget is located. That means that if you actually want to use the gadget you'll need the absolute address, so that means you'll need to somehow leak the location of the base of the code beforehand and simply add the offset of the gadget to it to access it directly.
+
+Finding the base of the `.text` section (or PIE base) is outside the scope of this document, but the super-abridged version is if you can find a way to leak the address of an object such as a symbol or variable or whatever, you can determine the offset of that object using something like [Ghidra](https://ghidra-sre.org) or something, and simply subtract it from the code base to get your PIE base.
+
+The point here though is that you will have to add the discovered code base location to the offset of each discovered ROP gadget to access that gadget in memory. Unless of course you tell pwntools where the address is!
+
+
+```python
+exe = context.binary = ELF("./vuln")
+
+# Let's say somehow we leaked an address, discovered the
+# address of the base of the code as 0xff000000
+exe.address = 0xff000000
+
+# Now that we've done that, the ROP gadgets we can use will
+# automatically add the offset to the exe.location value,
+# giving the exact location of the gadget. Nice for readability.
+
+# Now set up the rop object using the executable we defined.
+rop = ROP(exe)
+```
+
+### How ROP works manually
+
+As an example, I will try to use a very simple ROP gadget that prints out the location of the `puts` function in the GOT. To do that, we need to use a `pop rdi; ret` gadget to move the address in the GOT into the `rdi` register before we call the `puts@PLC` function. Manually, it would look something like this:
+
+```python
+pop_rdi = 0x10c
+puts_plc = 0x7f0014df
+puts_got = 0x7f0059cd
+
+leaked_base = 0x55df3000
+
+payload = b'A'*50                       # padding
+payload += pack(leaked_base + pop_rdi)  # pop_rdi gadget
+payload += pack(puts_got)               # address in the got
+payload += pack(puts_plc)               # execute puts
+
+p.send(payload)
+```
+
+### How to ROP like you own the place
+
+The above addresses are all made up but you get the idea. You have to research all the address locations and set them as variables. This is fine of course, but the above can be done in pwntools very easily. To accomplish the same thing as the above, this code is functionally equivalent:
+
+```python
+exe = context.binary = ELF('./vuln')
+
+# ... leak the address somehow...
+exe.address = 0x55df3000
+
+# build the ROP object
+rop = ROP(exe)
+rop.puts(exe.got.puts)
+p.send(flat({50: rop}))
+```
+
+Pwntools will set up the gadgets to put the `puts` address in the GOT into the `rdi` register, then call the function from the PLC, all while packing the data appropriately. From there it should print out the address for you to ingest. And if you had a more complicated rop chain that you needed to add, you can just keep adding more commands like `rop.printf(exe.got.printf)` or whatever. Each new command will append to the rop chain for you to send off.
+
+### Other gadgets
+
+You can get a list of the rop gadgets you can use:
+
+```python
+rop.gadgets
+"""
+{4900: Gadget(0x1324, ['add esp, 0x38', 'pop rbx', 'pop rbp', 'ret'], [56, 'rbx', 'rbp'], 0x50),
+ 4952: Gadget(0x1358, ['add esp, 0x48', 'ret'], [72], 0x50),
+ 4119: Gadget(0x1017, ['add esp, 8', 'ret'], [8], 0x10),
+ 4899: Gadget(0x1323, ['add rsp, 0x38', 'pop rbx', 'pop rbp', 'ret'], [56, 'rbx', 'rbp'], 0x50),
+ 4951: Gadget(0x1357, ['add rsp, 0x48', 'ret'], [72], 0x50),
+ 4118: Gadget(0x1016, ['add rsp, 8', 'ret'], [8], 0x10),
+ 5052: Gadget(0x13bc, ['pop r12', 'pop r13', 'pop r14', 'pop r15', 'ret'], ['r12', 'r13', 'r14', 'r15'], 0x28),
+ 5054: Gadget(0x13be, ['pop r13', 'pop r14', 'pop r15', 'ret'], ['r13', 'r14', 'r15'], 0x20),
+ 5056: Gadget(0x13c0, ['pop r14', 'pop r15', 'ret'], ['r14', 'r15'], 0x18),
+ 5058: Gadget(0x13c2, ['pop r15', 'ret'], ['r15'], 0x10),
+ 5051: Gadget(0x13bb, ['pop rbp', 'pop r12', 'pop r13', 'pop r14', 'pop r15', 'ret'], ['rbp', 'r12', 'r13', 'r14', 'r15'], 0x30),
+ 5055: Gadget(0x13bf, ['pop rbp', 'pop r14', 'pop r15', 'ret'], ['rbp', 'r14', 'r15'], 0x20),
+ 4370: Gadget(0x1112, ['pop rbp', 'ret'], ['rbp'], 0x10),
+ 4369: Gadget(0x1111, ['pop rbx', 'pop rbp', 'ret'], ['rbx', 'rbp'], 0x18),
+ 5059: Gadget(0x13c3, ['pop rdi', 'ret'], ['rdi'], 0x10),
+ 5057: Gadget(0x13c1, ['pop rsi', 'pop r15', 'ret'], ['rsi', 'r15'], 0x18),
+ 5053: Gadget(0x13bd, ['pop rsp', 'pop r13', 'pop r14', 'pop r15', 'ret'], ['rsp', 'r13', 'r14', 'r15'], 0x28),
+ 4122: Gadget(0x101a, ['ret'], [], 0x8)}
+"""
+```
+
+You can see everything it has found. But understand that this is usually significantly smaller than what other tools like `ropper` or `ROPGadget` can find! Sometimes you need to reference one of those tools to find a gadget that suits your needs. But if we do have that gadget, we can easily add this to the rop chain as before by issuing a `rop.raw()` function.
+
+```python
+exe = context.binary = ELF('./vuln')
+
+# ... leak the address somehow...
+exe.address = 0x55df3000
+
+# build the ROP object
+rop = ROP(exe)
+
+# Discovered weird rop gadget that pwntools filtered out
+sub_rsp = 0x10ca      # sub rsp 0x28, ret
+
+# Now add the discovered address to the ropchain. Don't
+# forget to add it to the base address, pwntools won't
+# add it with the raw() function. Though it will pack
+# the data appropriately!
+rop.raw(exe.address + sub_rsp)
+```
+
+As I learn more, I'll add to this section. I feel like I'm only scratching the surface with the `rop` module in pwntools.
+
+### SROP (Signal Return-Oriented Programming)
+
+Without getting too far into it, the basic here is that if you have the ability to execute a `syscall` arbitrarily _and_ you don't have access to that many rop gadgets, you can always perform a `Sigreturn` syscall, which is a special call that will clean up after a signal handler has completed its execution. Basically this means that some process has essentially saved the state of the registers by pushing all of them onto the stack, and when whatever has happened has finished, it pops everything back off the stack in a very specific order into the registers as a means of handling that interrupt. If you can execute an arbitrary syscall, you can build a Sigreturn object in pwntools which will set up all the registers to whatever state you want. It's pretty handy in some of those tight situations.
+
+For this example, I'm going to execute an `mprotect()` syscall, which will set any section of memory I specify to RWX, so I can push shellcode there. Basically, build a Sigreturn frame like so:
+
+```python
+SYSCALL_RET = 0xcafebabe
+frame = SigreturnFrame(kernel='amd64')
+
+frame.rax = constants.SYS_mprotect # mprotect() syscall value should be 0xa
+frame.rdi = 0x400000               # memory to adjust
+frame.rsi = 0x4000                 # size of memory to make executable
+frame.rdx = 0x7                    # mode rwx
+frame.rsp = 0xbaddcafe             # Wherever we want the stack pointer to be
+frame.rip = SYSCALL_RET            # the syscall gadget to run this whole thing
+```
+
+Now the RIP should point to the currently-executing action, which in this case is the `SYSCALL_RET` value. We can push this whole thing onto the stack:
+
+```python
+payload = SYSCALL_RET
+payload += bytes(frame)
+
+p.sendline(payload)
+```
+
+## ASLR Toggle Script
+
+This isn't related to pwntools at all, but sometimes I want to have a script that disables and re-enables ASLR on a whim. So I made this.
+
+```bash
+#!/bin/bash
+
+ASLR="/proc/sys/kernel/randomize_va_space"
+
+if [[ $(cat $ASLR) == 0 ]];
+then
+    echo "ASLR is turned off. Turning on now..."
+    echo 2 | sudo tee $ASLR
+    echo "done."
+else
+    echo "ASLR is turned on. Turning off now..."
+    echo 0 | sudo tee $ASLR
+    echo "done."
+fi
+```
+Just handy to have in your back pocket.
 
 ## Conclusion
 
-Hopefully I've managed to shed some light on the mystery of working with bytes in Python. I'll add to this document as much as I can if I find out other neat tricks!
+This is about all I can muster. Just like every other article and cheat sheet I've ever written, I hope to update this as I learn new things.
