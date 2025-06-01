@@ -2,9 +2,7 @@
 layout: post
 title: x86 Assembly Basics
 date: 2024-08-25 21:32 -0400
-description: Learn the basics of x86 assembly code for use in dissemblers like
-  Ghidra, IDA, and Binary Ninja, and debuggers like x64dbg.
-
+description: Learn the basics of x86 assembly code for use in dissemblers
 categories:
   - Reverse Engineering Malware
 ---
@@ -52,7 +50,7 @@ The stack is a last-in-first-out (LIFO) data structure that is stored in system
 memory (i.e., RAM). Like a stack of plates, the last item `pushed` onto the
 stack will be the first item `popped` off of the stack.
 
-![A representation of the stack with push and pop operations](/assets/images/lifo-stack.webp)
+
 
 32 bit applications use the stack to store the values of local variables and
 function arguments. The first parameter will be the bottom `PUSH` instruction,
