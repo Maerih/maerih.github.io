@@ -180,3 +180,43 @@ Add web to target
 ```bash
 wmap_targets -t <ip>
 ```
+
+```bash
+ msfconsole
+This copy of metasploit-framework is more than two weeks old.
+ Consider running 'msfupdate' to update to the latest version.
+Metasploit tip: View all productivity tips with the tips command
+                                                  
+                                   ___          ____
+                               ,-""   `.      < HONK >
+                             ,'  _   e )`-._ /  ----
+                            /  ,' `-._<.===-'
+                           /  /
+                          /  ;
+              _          /   ;
+ (`._    _.-"" ""--..__,'    |
+ <_  `-""                     \
+  <`-                          :
+   (__   <__.                  ;
+     `-.   '-.__.      _.'    /
+        \      `-.__,-'    _,'
+         `._    ,    /__,-'
+            ""._\__,'< <____
+                 | |  `----.`.
+                 | |        \ `.
+                 ; |___      \-``
+                 \   --<
+                  `.`.<
+                    `-'
+
+
+
+       =[ metasploit v6.4.49-dev-                         ]
++ -- --=[ 2492 exploits - 1283 auxiliary - 431 post       ]
++ -- --=[ 1466 payloads - 49 encoders - 13 nops           ]
++ -- --=[ 9 evasion                                       ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+
+msf6 > 
+```
