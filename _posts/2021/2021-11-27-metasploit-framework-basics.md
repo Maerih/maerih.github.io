@@ -14,9 +14,12 @@ math: true
 
 In the world of cybersecurity, the Metasploit Framework stands out as one of the most powerful and widely used tools for penetration testing and ethical hacking. Originally developed by H.D. Moore in 2003 as a portable network tool using Perl, Metasploit has evolved into a comprehensive framework now maintained by Rapid7. It provides security professionals and researchers with a robust platform to develop, test, and execute exploits against remote targets.
 
+![Desktop View](/assets/img/general/msfconsole.png){: .shadow } 
+_Screenshot when starting Msfconsole!_
+
+
 At its core, Metasploit simplifies the process of discovering vulnerabilities, gaining access, and validating security defenses — all within a structured, modular environment. From system exploitation and privilege escalation to post-exploitation and pivoting, Metasploit offers a full arsenal of features that make it indispensable for offensive security testing.
 
-Whether you’re a beginner learning about cybersecurity or an experienced red team operator, understanding Metasploit is crucial to mastering modern penetration testing techniques.
 
 <h4>🛠️ Metasploit Basics: Essential Commands for Beginners</h4>
 
@@ -85,17 +88,26 @@ List all available exploits
 show exploits
 ```
 
-# List auxiliary modules (used for scanning, fuzzing, etc.)
+List auxiliary modules (used for scanning, fuzzing, etc.)
+```bash
 show auxiliary
-
-# List post-exploitation modules
+```
+List post-exploitation modules
+```bash
 show post
+```
 
-# List encoding modules used to bypass filters and AV
+List encoding modules used to bypass filters and AV
+```bash
 show encoders
+```
 
-# List evasion modules
+List evasion modules
+```bash
 show evasions
+```
 
-# List nop generators
+List nop generators
+```bash
 show nops
+```
