@@ -5,6 +5,8 @@ date: 2023-11-05 19:43:00 +0300
 categories: [Evasion Techniques, Red Teaming]
 tags: [Windows API, EDR Evasion, Stealth, Persistence, Kernel Manipulation]
 pin: true
+description: Unleashing Advanced Evasion Techniques in Windows with Low-Level API Manipulation.
+toc: true
 ---
 
 # Unleashing Advanced Evasion Techniques in Windows with Low-Level API Manipulation
