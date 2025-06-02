@@ -181,7 +181,7 @@ Add web to target
 wmap_targets -t <ip>
 ```
 
-```bash
+```
  msfconsole
 This copy of metasploit-framework is more than two weeks old.
  Consider running 'msfupdate' to update to the latest version.
