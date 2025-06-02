@@ -12,10 +12,51 @@ math: true
 
 <h4>🔍 Introduction to Metasploit Framework</h4>
 
+```bash
+ msfconsole
+This copy of metasploit-framework is more than two weeks old.
+ Consider running 'msfupdate' to update to the latest version.
+Metasploit tip: View all productivity tips with the tips command
+                                                  
+                                   ___          ____
+                               ,-""   `.      < HONK >
+                             ,'  _   e )`-._ /  ----
+                            /  ,' `-._<.===-'
+                           /  /
+                          /  ;
+              _          /   ;
+ (`._    _.-"" ""--..__,'    |
+ <_  `-""                     \
+  <`-                          :
+   (__   <__.                  ;
+     `-.   '-.__.      _.'    /
+        \      `-.__,-'    _,'
+         `._    ,    /__,-'
+            ""._\__,'< <____
+                 | |  `----.`.
+                 | |        \ `.
+                 ; |___      \-``
+                 \   --<
+                  `.`.<
+                    `-'
+
+
+
+       =[ metasploit v6.4.49-dev-                         ]
++ -- --=[ 2492 exploits - 1283 auxiliary - 431 post       ]
++ -- --=[ 1466 payloads - 49 encoders - 13 nops           ]
++ -- --=[ 9 evasion                                       ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+
+msf6 > 
+```
+
 In the world of cybersecurity, the Metasploit Framework stands out as one of the most powerful and widely used tools for penetration testing and ethical hacking. Originally developed by H.D. Moore in 2003 as a portable network tool using Perl, Metasploit has evolved into a comprehensive framework now maintained by Rapid7. It provides security professionals and researchers with a robust platform to develop, test, and execute exploits against remote targets.
 
 ![Desktop View](/assets/img/general/msfconsole.png){: .shadow } 
 _Screenshot when starting Msfconsole!_
+
 
 
 At its core, Metasploit simplifies the process of discovering vulnerabilities, gaining access, and validating security defenses — all within a structured, modular environment. From system exploitation and privilege escalation to post-exploitation and pivoting, Metasploit offers a full arsenal of features that make it indispensable for offensive security testing.
@@ -181,42 +222,3 @@ Add web to target
 wmap_targets -t <ip>
 ```
 
-```
- msfconsole
-This copy of metasploit-framework is more than two weeks old.
- Consider running 'msfupdate' to update to the latest version.
-Metasploit tip: View all productivity tips with the tips command
-                                                  
-                                   ___          ____
-                               ,-""   `.      < HONK >
-                             ,'  _   e )`-._ /  ----
-                            /  ,' `-._<.===-'
-                           /  /
-                          /  ;
-              _          /   ;
- (`._    _.-"" ""--..__,'    |
- <_  `-""                     \
-  <`-                          :
-   (__   <__.                  ;
-     `-.   '-.__.      _.'    /
-        \      `-.__,-'    _,'
-         `._    ,    /__,-'
-            ""._\__,'< <____
-                 | |  `----.`.
-                 | |        \ `.
-                 ; |___      \-``
-                 \   --<
-                  `.`.<
-                    `-'
-
-
-
-       =[ metasploit v6.4.49-dev-                         ]
-+ -- --=[ 2492 exploits - 1283 auxiliary - 431 post       ]
-+ -- --=[ 1466 payloads - 49 encoders - 13 nops           ]
-+ -- --=[ 9 evasion                                       ]
-
-Metasploit Documentation: https://docs.metasploit.com/
-
-msf6 > 
-```
