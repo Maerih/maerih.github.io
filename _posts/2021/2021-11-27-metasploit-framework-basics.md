@@ -1,10 +1,11 @@
 ---
-title: TITLE
+title: Metasploit Framework Basics
 date: 2021-11-27 00:00:00 +0800
-categories: [TOOLS]
+categories: [TOOLS, METASPLOIT]
 tags: [Metasploit]     # TAG names should always be lowercase
-description: Short summary of the post.
+description: Metasploit Framework, a tool for developing and executing exploit code against a remote target machine.
 pin: false
+toc: true
 math: true
 ---
 
@@ -29,9 +30,20 @@ Metasploit is a powerful tool for penetration testers and security researchers. 
 
 ## 📘 Basic Metasploit Commands
 
+
+```cpp
+public:
+    Book() {}
+    Book(string id, string title, string author, int publisherYear)
+        : id(id), title(title), author(author), publisherYear(publisherYear) {}
+
+    virtual void toString() const = 0;
+};
+``` 
 ```bash
 # Launch the Metasploit console
 msfconsole
+```
 
 # Display the global help menu with command usage
 help
