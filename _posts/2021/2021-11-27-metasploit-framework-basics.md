@@ -39,35 +39,51 @@ public:
 
     virtual void toString() const = 0;
 };
-``` 
+```
+
+Launch the Metasploit console
 ```bash
-# Launch the Metasploit console
 msfconsole
 ```
 
-# Display the global help menu with command usage
+Display the global help menu with command usage
+```bash
 help
+```
 
-# Search for modules that include the keyword 'exploit'
-search exploit
-
-# Search for modules targeting the Windows platform
-search platform:windows
-
-# Search for modules related to port 22 (commonly SSH)
-search port:22
-
-# Narrow down search to exploits related to port 22
-search port:22 type:exploit
-
-# Show help options for the search command
+Show help options for the search command
+```bash
 search -h
+```
 
-# List all available payloads
+Search for modules that include the keyword 'exploit'
+```bash
+search exploit
+```
+
+Search for modules targeting the Windows platform
+```bash
+search platform:windows
+```
+
+Search for modules related to port 22 (commonly SSH)
+```bash
+search port:22
+```
+Narrow down search to exploits related to port 22
+```bash
+search port:22 type:exploit
+```
+
+List all available payloads
+```bash
 show payloads
+```
 
-# List all available exploits
+List all available exploits
+```bash
 show exploits
+```
 
 # List auxiliary modules (used for scanning, fuzzing, etc.)
 show auxiliary
