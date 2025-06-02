@@ -21,8 +21,7 @@ _Screenshot when starting Msfconsole!_
 At its core, Metasploit simplifies the process of discovering vulnerabilities, gaining access, and validating security defenses — all within a structured, modular environment. From system exploitation and privilege escalation to post-exploitation and pivoting, Metasploit offers a full arsenal of features that make it indispensable for offensive security testing.
 
 
-<h4>🛠️ Metasploit Basics: Essential Commands for Beginners</h4>
-
+## 🛠️ Metasploit Basics: Essential Commands
 
 Metasploit is a powerful tool for penetration testers and security researchers. Before diving into real-world exploitation or post-exploitation tasks, it's important to get comfortable with the Metasploit console (`msfconsole`) and its basic commands.
 
@@ -31,7 +30,51 @@ Metasploit is a powerful tool for penetration testers and security researchers. 
 
 ---
 
-## 📘 Basic Metasploit Commands
+<h4>Setting up Metasploit Database</h4>
+
+🔧 Start PostgreSQL Service and check status
+```bash
+sudo systemctl start postgresql
+```
+![Desktop View](/assets/img/general/msf/1.png){: .shadow } 
+_Start PostgreSQL Service and check status_
+
+Initialize and start the Metasploit database service
+```bash
+sudo msfdb init
+```
+![Desktop View](/assets/img/general/msf/34.png){: .shadow } 
+_Initialize and start the Metasploit database service_
+
+
+Check if the database is running properly
+```bash
+sudo msfdb status
+```
+![Desktop View](/assets/img/general/msf/35.png){: .shadow } 
+_Check if the database is running properly_
+
+Inside msfconsole, run this to check DB connectivity
+```bash
+db_status
+```
+![Desktop View](/assets/img/general/msf/36.png){: .shadow } 
+_Inside msfconsole, run this to check DB connectivity_
+
+
+Use db_connect with credentials to manually connect to the DB
+```bash
+db_connect user:password@localhost:5432/msf_database
+```
+
+```bash
+Config File Path
+
+/usr/share/metaploit-framewrork/config/database.yml
+```
+
+
+<h4>📘 Basic Metasploit Commands</h4>
 
 
 ```cpp
@@ -104,7 +147,7 @@ show encoders
 
 List evasion modules
 ```bash
-show evasions
+show evasion
 ```
 
 List nop generators
