@@ -7,6 +7,7 @@ tags: [Windows API, EDR Evasion, Stealth, Persistence, Kernel Manipulation]
 pin: true
 description: Unleashing Advanced Evasion Techniques in Windows with Low-Level API Manipulation.
 toc: true
+image: /assets/img/general/evasion.png
 ---
 
 # Unleashing Advanced Evasion Techniques in Windows with Low-Level API Manipulation
