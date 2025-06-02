@@ -3,6 +3,7 @@ layout: post
 title: "HTML Smuggling- Added Features"
 date: 2023-12-30
 categories: security html
+description: HTML smuggling is an innovative attack technique, which abuses HTML5 and JavaScript features to inject or extract data across network boundaries.
 ---
 
 # Make HTML Smuggling Great Again P1 
