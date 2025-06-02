@@ -154,3 +154,29 @@ List nop generators
 ```bash
 show nops
 ```
+
+
+## Metasploit WMAP and Nessus Integration Guide
+
+<h4> WMAP Web Scanning Commands</h4>
+
+Initial Setup
+```bash
+msfconsole
+load wmap
+wmap_help
+```
+Add Target to Scope
+```bash
+wmap_sites -a <ip>
+```
+
+list all websites on scope
+```bash
+wmap_sites -l
+```
+
+Add web to target
+```bash
+wmap_targets -t <ip>
+```
