@@ -1,6 +1,6 @@
 ---
 title: DDoS Project - Detection and Response
-date: 2024-06-27 09:00:00 -500
+date: 2023-06-27 09:00:00 -500
 categories: [projects,DDoS]
 tags: [fail2ban,vmware,ddos,snort,wireshark,tcpdump,kali]
 image: /assets/img/ddos_project/4046203.png
