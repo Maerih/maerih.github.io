@@ -5,7 +5,7 @@ date: 2024-02-13 00:00:00 +0800
 categories: [TOOLS, COBALT STRIKE]
 tags: [TAG]     # TAG names should always be lowercase
 description:  Best way to craft a custom Malleable C2 profile in Cobalt Strike to evade detection and mimic legitimate network traffic.
-pin: true
+pin: false
 image: assets/img/general/cobalt.png
 toc: true
 ---
