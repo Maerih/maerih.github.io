@@ -4,7 +4,7 @@ date: 2023-09-25 10:00:00 +0200
 categories: [Binary Ninja, Tools]
 tags: [reverse engineering, exploit, automation, binja]
 comments: true
-author: zerotistic
+author: maerih
 
 ---
 
