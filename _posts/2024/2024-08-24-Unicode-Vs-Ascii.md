@@ -7,7 +7,7 @@ tags:
 pin: false
 description: "Beyond ASCII: How Unicode Changed the Game (and Broke It)."
 toc: true
-image: /assets/img/Ascii/ascii.png
+image: /assets/img/Ascii/ascii1.png
 ---
 
 
