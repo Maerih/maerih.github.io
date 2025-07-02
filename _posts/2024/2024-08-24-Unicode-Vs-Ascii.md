@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Unicode vs Ascii"
-date: 2024-12-02 19:43:00 +0300
+date: 2024-1-02 19:43:00 +0300
 categories: [Programming]
 tags: 
 pin: false
@@ -83,6 +83,30 @@ For example:
 * `HANDLE` and `DWORD` are commonly used in Windows APIs that process encoded text.
 
 Understanding these types is crucial if you’re working with Windows applications, calling APIs, or writing code that has to handle different encodings safely. If you mix them up—or assume the wrong encoding—you can end up with **corrupted strings, crashes, or subtle security vulnerabilities.**
+
+- Handles are objects that represent a resource.
+- DWORDS are typedef for unsigned int.
+- LPSTR is a long pointer.
+- LPBYTE is a long pointer to a byte array.
+
+
+
+Unicode can be stored in **different encoding formats**, such as UTF-8, UTF-16, and UTF-32.
+
+* **UTF-16** typically uses **2 bytes (16 bits) per character**, but some characters (like emojis) require 4 bytes.
+* **UTF-32** uses **4 bytes (32 bits) for every character**, which makes processing simpler but increases memory usage.
+* **UTF-8** is variable-length: it uses 1 byte for standard ASCII characters and up to 4 bytes for other symbols.
+
+In contrast, **ASCII always uses 1 byte (8 bits)** per character, with only the first 7 bits storing the character code (values 0–127).
+
+Different operating systems and environments prefer different encodings:
+
+* Many **Linux systems** and some APIs use **UTF-32** internally (4 bytes per character).
+> * Windows commonly uses **UTF-16** for Unicode text.
+
+> So depending on the **architecture and platform**, the same Unicode character can occupy anywhere from **1 to 4 bytes**, while ASCII stays at a fixed 1 byte per character.
+
+{: .prompt-tip }
 
 
 ### Decompiler
