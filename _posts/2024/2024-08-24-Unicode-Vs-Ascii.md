@@ -377,3 +377,4 @@ int main() {
 * `wprintf()` and `_tprintf()` are needed to print Unicode or generic strings.
 * For Windows API functions, you often also see `TEXT()` as an alternative to `_T()`.
 
+<iframe src="https://giphy.com/embed/dB0zhyjJ6Ejf4aETYZ" width="480" height="271" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/foilarmsandhog-foil-arms-and-hog-fah-conor-mckenna-dB0zhyjJ6Ejf4aETYZ"></a></p>
