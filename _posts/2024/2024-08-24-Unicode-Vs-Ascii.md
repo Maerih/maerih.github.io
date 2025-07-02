@@ -102,17 +102,70 @@ In contrast, **ASCII always uses 1 byte (8 bits)** per character, with only the 
 Different operating systems and environments prefer different encodings:
 
 * Many **Linux systems** and some APIs use **UTF-32** internally (4 bytes per character).
-> * Windows commonly uses **UTF-16** for Unicode text.
+* Windows commonly uses **UTF-16** for Unicode text.
 
-> So depending on the **architecture and platform**, the same Unicode character can occupy anywhere from **1 to 4 bytes**, while ASCII stays at a fixed 1 byte per character.
-
-{: .prompt-tip }
+So depending on the **architecture and platform**, the same Unicode character can occupy anywhere from **1 to 4 bytes**, while ASCII stays at a fixed 1 byte per character.
 
 
-### Decompiler
-Primarily, at the heart of a decompiler's functionality is its ability to do precisely that: decompile code. It's a fundamental expectation, after all. Within Binja, users can traverse binary code interactively, accessing disassembled code while making annotations as required. Binja provides multiple views, including disassembly, LILL, MLIL, HLIL, Pseudo-C, and SSA views. In forthcoming posts, I'll delve deeper into these views, and you'll come to appreciate their practical utility. At this stage, it's not essential to delve into the specifics of what each view offers. Typically, when starting, most users tend to primarily utilize disassembly and Pseudo-C views. These two perspectives provide a solid foundation for initial exploration and analysis.
-![Exemple of the decompiler's view](/assets/img/hero-1/decomp.png)
-_Exemple of the decompiler's view_
 
-### Multi-architecture support
-Another one of Binja's notable strengths lies in its extensive support for multiple architectures. It provides compatibility with a broad spectrum of architectures, including well-established ones like x86, ARM, MIPS, PowerPC, and many others. What's particularly noteworthy is that Binja goes beyond this list. In subsequent posts, I'll delve deeper into this aspect, but it's worth mentioning that it offers the capability to introduce support for new architectures through workflows and plugins. This feature proves exceptionally valuable for individuals engaged in tasks involving less common or emerging instruction sets, as well as those tackling Capture The Flag (CTF) challenges. A few exemples include [Motorola 68k](https://github.com/galenbwill/binaryninja-m68k), [msp430](https://github.com/joshwatson/binaryninja-msp430), [Renesas M16C](https://github.com/whitequark/binja-m16c) or [Renesas V850](https://github.com/tizmd/binja-v850).
+
+
+
+### 🔤 ANSI vs Unicode in C/C++ (with Code Example)
+
+In Windows programming, strings can be stored and handled in either **ANSI** or **Unicode** formats. Understanding the types used—like `char`, `wchar_t`, `LPCSTR`, and `LPCWSTR`—is key to using the right functions.
+
+#### 🔹 ANSI (Single-byte per character)
+
+* Uses `char`
+* Functions: `strlen`, `LPCSTR` (Long Pointer to Constant String)
+
+#### 🔹 Unicode (Typically 2 bytes per character)
+
+* Uses `wchar_t`
+* Functions: `wcslen`, `LPCWSTR` (Long Pointer to Constant Wide String)
+
+---
+
+### ✅ Code Example: Comparing ANSI and Unicode Strings
+
+```c
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+
+// Typedefs (as used in Windows headers)
+typedef const char* LPCSTR;
+typedef const wchar_t* LPCWSTR;
+
+int main() {
+    // ANSI string
+    LPCSTR ansiStr = "Hello ANSI";
+    printf("ANSI: %s\n", ansiStr);
+    printf("Length: %zu bytes\n", strlen(ansiStr));
+
+    // Unicode string
+    LPCWSTR unicodeStr = L"Hello Unicode";
+    wprintf(L"Unicode: %ls\n", unicodeStr);
+    wprintf(L"Length: %zu wide chars (usually 2 bytes each)\n", wcslen(unicodeStr));
+
+    return 0;
+}
+```
+
+
+
+**Key Points**
+
+* `strlen` returns the number of **char** characters (ANSI, 1 byte each).
+* `wcslen` returns the number of **wchar\_t** characters (Unicode, typically 2 bytes each).
+* `LPCSTR` = `const char*` (ANSI)
+* `LPCWSTR` = `const wchar_t*` (Unicode)
+
+**Other Types**
+- Char -> char
+- PSTR OR LPSTR => char*
+- PCSTR OR LPCSTR => const char*
+- LPWSTR => wchar_t*
+- LPCWSTR => const wchar_t*
+- etc
