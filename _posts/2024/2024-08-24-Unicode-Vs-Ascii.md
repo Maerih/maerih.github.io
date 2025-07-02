@@ -127,7 +127,7 @@ In Windows programming, strings can be stored and handled in either **ANSI** or 
 
 ---
 
-### ✅ Code Example: Comparing ANSI and Unicode Strings
+###  Code Example: Comparing ANSI and Unicode Strings
 
 ```c
 #include <stdio.h>
@@ -169,3 +169,128 @@ int main() {
 - LPWSTR => wchar_t*
 - LPCWSTR => const wchar_t*
 - etc
+
+
+
+
+###  ANSI vs Unicode APIs and `TCHAR`
+
+In Windows, many APIs have **ANSI** (`A`) and **Unicode** (`W`) versions:
+
+* `SetWindowTextA()` → Takes an ANSI string (`char*`)
+* `SetWindowTextW()` → Takes a Unicode string (`wchar_t*`)
+
+To write code that can compile as **either ANSI or Unicode**, Windows SDK provides `TCHAR` and macros like `TEXT()` or `_T()`.
+
+ **How it works:**
+
+* `TEXT("MyApp")` automatically becomes:
+
+  * `L"MyApp"` in Unicode builds
+  * `"MyApp"` in ANSI builds
+
+---
+
+###  Example Code
+
+```c
+#include <windows.h>
+#include <tchar.h>
+
+void SetTitle(HWND hwnd) {
+    // TCHAR adapts to ANSI or Unicode
+    SetWindowText(hwnd, _T("My Application"));
+}
+```
+
+---
+
+###  Quick Explanation
+
+* `TCHAR` = `wchar_t` in Unicode mode, `char` in ANSI mode
+* `SetWindowText()` automatically maps to `SetWindowTextW()` or `SetWindowTextA()` depending on your project settings
+* This lets you **write one codebase** that works in both modes
+
+
+## Handling ANSI and Unicode Strings with Microsoft C Runtime Macros
+
+Headers for the **Microsoft C Runtime Libraries (CRT)** define a special set of macros to make your code portable between ANSI and Unicode builds.
+
+**How It Works:**
+
+* If `_UNICODE` is **defined**, these macros resolve to the **Unicode (wide-character) versions**.
+* If `_UNICODE` is **not defined**, they resolve to the **ANSI versions**.
+
+---
+
+### 🔹 Example: String Length Macros
+
+| Function/Macro           | Resolved Version (ANSI)                   | Resolved Version (Unicode)   |
+| ------------------------ | ----------------------------------------- | ---------------------------- |
+| `strlen(const char*)`    | Counts ANSI string length                 | N/A                          |
+| `wcslen(const wchar_t*)` | N/A                                       | Counts Unicode string length |
+| `_tcslen(const TCHAR*)`  | `strlen()` if ANSI, `wcslen()` if Unicode |                              |
+
+---
+
+### 🔹 What About String Copy and Concatenation?
+
+Windows prefixes like `_tcs` or `_tc` adapt automatically:
+
+| Operation           | ANSI Function      | Unicode Function   | Generic Macro       |
+| ------------------- | ------------------ | ------------------ | ------------------- |
+| Copy string         | `strcpy()`         | `wcscpy()`         | `_tcscpy()`         |
+| String length       | `strlen()`         | `wcslen()`         | `_tcslen()`         |
+| Concatenate strings | `strcat()`         | `wcscat()`         | `_tcscat()`         |
+| Secure variants     | `strcpy_s()`, etc. | `wcscpy_s()`, etc. | `_tcscpy_s()`, etc. |
+
+---
+
+### 🔹 Why Use `TCHAR` and `_tcs*`?
+
+These macros and typedefs let you **compile the same source code** for:
+
+* **ANSI builds** (`char`-based functions)
+* **Unicode builds** (`wchar_t`-based functions)
+
+This way, you don’t have to rewrite your logic—just set your project to ANSI or Unicode.
+
+---
+
+### 🧠 **Quick Example**
+
+```c
+#include <tchar.h>
+#include <string.h>
+#include <wchar.h>
+#include <stdio.h>
+
+int main() {
+    const TCHAR* myString = _T("Hello World");
+    size_t len = _tcslen(myString);
+    
+    _tprintf(_T("Length: %zu\n"), len);
+    return 0;
+}
+```
+
+✅ In **ANSI build**, this resolves to:
+
+```c
+strlen(const char*)
+```
+
+✅ In **Unicode build**, it resolves to:
+
+```c
+wcslen(const wchar_t*)
+```
+
+---
+
+### 💡 What You Might Have Missed
+
+* `_tprintf()` is the generic macro for `printf` (ANSI) or `wprintf` (Unicode).
+* `_T()` or `TEXT()` wraps your string literals to adapt automatically (`"text"` vs. `L"text"`).
+* Secure string functions have `_s` suffixes (like `_tcscpy_s()`).
+
