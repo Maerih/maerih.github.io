@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Unicode vs Ascii"
-date: 2023-12-02 19:43:00 +0300
+date: 2024-12-02 19:43:00 +0300
 categories: [Programming]
 tags: 
 pin: false
@@ -55,16 +55,35 @@ After compiling and running we find output:
 {: .prompt-tip }
 
 ## ANSI Vs UNICODE
-Binary Ninja comes in three versions: Non-commercial (Personal), Commercial, and Enterprise. The Non-commercial and Commercial versions use individual license files, while the Enterprise version uses a floating license system. This system allows licenses to be checked out from the Enterprise Server by any client for a specified duration.
-The disparities between Non-commercial and Commercial licenses are quite limited, encompassing just two distinctions: the ability to utilize them for commercial purposes and access to the headless API.
-In contrast, the Enterprise version not only offers these features but also includes Single Sign-On (SSO), Project Management capabilities, Floating licenses, and Access Control features.
 
-One particularly appealing aspect of the licensing arrangement is that your payment covers a year of updates for Binja, rather than a year of usage. This implies that when you make a payment, you'll receive updates for a year, but you can continue using Binja beyond that period (although I strongly advise everyone to renew annually, given the numerous valuable updates available).
+**ASCII -Character encoding**
+- Maps some bits(0's and 1's) into characters.
+- Uses 7 bits for encoding, it can represent 2^7 =128 different characters.
+- Some characters ie `65->A, 166->t` Binary(`100001->A , 1110100->t`)
+- Use the converter [here](https://www.duplichecker.com/ascii-to-text.php).
+- original 7 bits were only enough to represent characters and punctuations.
+- Since a byte has 8 bits,there was a lot of competition which other character should be supported.
 
-You can find more information [here](https://binary.ninja/purchase/).
 
-## Overview
-Binja is an extensive and intricate project, resulting in the development of numerous utilities and components. In this section, I'll provide a broad overview of these components, without delving into detailed explanations for each one. In forthcoming posts, I'll delve into specific use cases and provide a more comprehensive understanding of how these components operate and their practical applications.
+**Unicode - Universal Character Encoding**
+- Supports many different alphabets and even emojis.
+- Unlike ASCII unicode does not define how its mapping should be implemented.
+- Only specifies which character refers to which code point.Code point is a hexidecimal number representing a character ie `u+0041-> A`
+
+
+### DWORD,LPSTR,LPBYTE,HANDLE
+
+You might wonder why Windows-specific types show up in a discussion about ASCII and Unicode. The reason is simple: **these types often define how text and binary data are stored, referenced, and manipulated in memory.**
+
+For example:
+
+* `LPSTR` is a pointer to an ANSI (ASCII) string.
+* `LPWSTR` is a pointer to a Unicode string.
+* `LPBYTE` can point to raw byte buffers, which could contain either ASCII or Unicode data.
+* `HANDLE` and `DWORD` are commonly used in Windows APIs that process encoded text.
+
+Understanding these types is crucial if you’re working with Windows applications, calling APIs, or writing code that has to handle different encodings safely. If you mix them up—or assume the wrong encoding—you can end up with **corrupted strings, crashes, or subtle security vulnerabilities.**
+
 
 ### Decompiler
 Primarily, at the heart of a decompiler's functionality is its ability to do precisely that: decompile code. It's a fundamental expectation, after all. Within Binja, users can traverse binary code interactively, accessing disassembled code while making annotations as required. Binja provides multiple views, including disassembly, LILL, MLIL, HLIL, Pseudo-C, and SSA views. In forthcoming posts, I'll delve deeper into these views, and you'll come to appreciate their practical utility. At this stage, it's not essential to delve into the specifics of what each view offers. Typically, when starting, most users tend to primarily utilize disassembly and Pseudo-C views. These two perspectives provide a solid foundation for initial exploration and analysis.
