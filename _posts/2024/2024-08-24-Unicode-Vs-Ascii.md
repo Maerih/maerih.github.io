@@ -274,13 +274,13 @@ int main() {
 }
 ```
 
-✅ In **ANSI build**, this resolves to:
+In **ANSI build**, this resolves to:
 
 ```c
 strlen(const char*)
 ```
 
-✅ In **Unicode build**, it resolves to:
+In **Unicode build**, it resolves to:
 
 ```c
 wcslen(const wchar_t*)
@@ -288,9 +288,92 @@ wcslen(const wchar_t*)
 
 ---
 
-### 💡 What You Might Have Missed
+### What Missed?
 
 * `_tprintf()` is the generic macro for `printf` (ANSI) or `wprintf` (Unicode).
 * `_T()` or `TEXT()` wraps your string literals to adapt automatically (`"text"` vs. `L"text"`).
 * Secure string functions have `_s` suffixes (like `_tcscpy_s()`).
+
+> Some headers use UNICODE instead of _UNICODE 
+{: .prompt-tip }
+
+
+Sure—here’s a **clean, clear rewrite** with a title, explanation, code example, and some extra details:
+
+---
+
+## 📝 Representing ANSI and Unicode Strings in C/C++
+
+Strings in C and C++ are defined using **double quotes**, but the way they’re stored in memory depends on whether you use ANSI or Unicode.
+
+
+### 🔹 ANSI Strings
+
+* Written with plain quotes:
+
+
+"This is an ANSI string"
+
+````
+- Each character takes **1 byte (8 bits)**.
+- Suitable for standard ASCII text.
+
+---
+
+### 🔹 Unicode Strings
+- To create a Unicode (wide) string, add an `L` prefix:  
+```c
+L"This is a Unicode string"
+````
+
+* Each character typically takes **2 bytes (16 bits)** or more.
+* The total size is always a **multiple of 2 bytes**.
+
+---
+
+### 🔹 Generic (Portable) Strings
+
+* Use `_T()` or `TEXT()` macros to automatically select ANSI or Unicode at compile time:
+
+  ```c
+  ```
+
+\_T("This is either ANSI or Unicode")
+
+````
+- This lets you write one codebase that works in both modes.
+
+---
+
+###  Code Example
+
+```c
+#include <tchar.h>
+#include <stdio.h>
+
+int main() {
+  // ANSI string
+  const char* ansiStr = "ANSI Example";
+  printf("ANSI: %s (Length: %zu)\n", ansiStr, strlen(ansiStr));
+
+  // Unicode string
+  const wchar_t* unicodeStr = L"Unicode Example";
+  wprintf(L"Unicode: %ls (Length: %zu)\n", unicodeStr, wcslen(unicodeStr));
+
+  // Generic string
+  const TCHAR* genericStr = _T("Generic Example");
+  _tprintf(_T("Generic: %s (Length: %zu)\n"), genericStr, _tcslen(genericStr));
+
+  return 0;
+}
+````
+
+---
+
+### Lastie
+
+* `L` prefix = wide character literal (`wchar_t*`).
+* `_T()` macro = picks ANSI or Unicode automatically.
+* `wprintf()` and `_tprintf()` are needed to print Unicode or generic strings.
+* For Windows API functions, you often also see `TEXT()` as an alternative to `_T()`.
 
