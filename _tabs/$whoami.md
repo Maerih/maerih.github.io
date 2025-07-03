@@ -16,7 +16,7 @@ order: 4
         <span style="--i:3">E</span>
         <span style="--i:4">R</span>
         <span style="--i:5">I</span> 
-        <span style="--i:5">H</span 
+        <span style="--i:5">H</span> 
       </div>
     </h1>
   </div>
