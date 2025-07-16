@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Hijacking ClickOnce"
-date: 2025-01-22 19:43:00 +0300
+date: 2024-01-22 19:43:00 +0300
 categories: [ClickOnce,PROGRAMMING]
 tags: 
 pin: false
