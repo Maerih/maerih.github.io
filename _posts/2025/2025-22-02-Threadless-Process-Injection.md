@@ -122,5 +122,7 @@ _CommandLine Setting-> Running ThreadLessInject_
 - Voilà! Notepad popped up—successfully triggered after our shellcode executed. It appeared moments after interacting with the Remote Desktop window, such as minimizing or switching focus.
 
 
-{% include embed/video.html src='/assets/img/ThreadLess/7.mkv' %}
+{% include embed/video.html src=/assets/img/ThreadLess/7.mp4 %}
 
+> Threadless injection provides a low-noise method for code execution by avoiding the creation of new threads and instead hijacking existing exported functions within known DLLs. This technique can help bypass conventional detection mechanisms that monitor thread creation or common injection patterns. By leveraging tools like ThreadlessInject and selecting frequently invoked APIs such as CryptProtectMemory, attackers can achieve code execution with reduced visibility. Proper testing in realistic environments remains essential to ensure effectiveness and evade modern security solutions.
+{: .prompt-danger }
