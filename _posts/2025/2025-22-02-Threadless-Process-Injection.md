@@ -105,10 +105,22 @@ _ThreadlessInject Options_
 _Lazy Mans choice -> CloseHandle_
 
 
-Next is to prepare our shellcode.For demo purposes will be using notepad shellcode replace this with your beacon shellcode.
+- Next is to prepare our shellcode.For demo purposes will be using `notepad.bin` shellcode replace this with your beacon shellcode.
 
 | Option            | Description                                                                 |
 |-------------------|-----------------------------------------------------------------------------|
 | `-p, --pid=VALUE`  | Target process ID to inject the shellcode into. Typically, this is the PID of the process you want to hijack (e.g., notepad.exe). |
 | `-d, --dll=VALUE`  | The name of the DLL that contains the export to be patched. This must be a `KnownDll`, such as `kernelbase.dll`. |
 | `-e, --export=VALUE` | The specific exported function within the DLL that will be hijacked (e.g., `CryptProtectMemory`). |
+
+![Desktop View](/assets/img/ThreadLess/4th.png){: .shadow } 
+_CommandLine Setting-> Running ThreadLessInject_
+
+> Executing...
+{: .prompt-danger }
+
+- Voilà! Notepad popped up—successfully triggered after our shellcode executed. It appeared moments after interacting with the Remote Desktop window, such as minimizing or switching focus.
+
+
+{% include embed/video.html src='/assets/img/ThreadLess/7.mp4' %}
+
