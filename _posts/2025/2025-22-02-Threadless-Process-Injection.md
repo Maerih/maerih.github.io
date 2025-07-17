@@ -7,7 +7,7 @@ tags:
 pin: false
 description: Executing malware using the target’s own threads.
 toc: true
-image: /assets/img/JSFuck/jsfuck.png
+image: /assets/img/ThreadLess/threadless.png
 ---
 
 <h1>OverView: Threadless Process Injection</h1>
@@ -123,6 +123,11 @@ _CommandLine Setting-> Running ThreadLessInject_
 
 
 {% include embed/video.html src='/assets/img/ThreadLess/7.webm' %}
+
+<video width="100%" controls>
+  <source src="/assets/img/ThreadLess/7.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
 
 
 
