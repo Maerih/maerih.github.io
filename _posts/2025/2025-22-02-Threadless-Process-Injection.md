@@ -55,18 +55,18 @@ _mstsc.exe APIs with PID of 6124_
 
 Going through all these damn Windows APIs trying to find the perfect hook spot had me like:
 
-<iframe src="https://giphy.com/embed/Sn1m4mcE6mbHwjaWIx" width="480" height="271" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/therokuchannel-season-1-the-roku-channel-honest-renovations-Sn1m4mcE6mbHwjaWIx">via GIPHY</a></p>
+<iframe src="https://giphy.com/embed/Sn1m4mcE6mbHwjaWIx" width="480" height="271" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
 
-There are so many APIs and all I wanted was one that gets called enough times to slide my shellcode.
+- There are so many APIs and all I wanted was one that gets called enough times to slide my shellcode.
 
-After burning way too many brain cells and coffee, I settled on hooking CloseHandle.
+- After burning way too many brain cells and coffee, I settled on hooking `CloseHandle`.
 
 Why?
 - Because it's called a lot. And by "a lot," I mean spam-level frequency in most apps.
 
-But let's be honest—this isn’t the most elegant or stealthy option. It works, sure, but it’s noisy. You’re basically piggybacking on Windows cleanup ops.
+- But let's be honest—this isn’t the most elegant or stealthy option. It works, sure, but it’s noisy. You’re basically piggybacking on Windows cleanup ops.
 
-So yeah, I went full `CloseHandle` gang for my threadless injection. Not perfect, but it gets the payload through the door... for now.
+- So yeah, I went full `CloseHandle` gang for my threadless injection. Not perfect, but it gets the payload through the door... for now.
 
 > If you want to be more surgical (and stealthy), consider hooking APIs like:`CryptProtectMemory & CryptUnprotectMemory`  
 {: .prompt-tip }
@@ -87,10 +87,28 @@ To get started:
     ```
 2. **Build the tool using Visual Studio to generate:** `ThreadlessInject.exe.`
 
-3. Once compiled, you can view the available options by running:
+3. **Once compiled, you can view the available options by running:**
     ```bash
     ThreadlessInject.exe -h
     ```
 
 ![Desktop View](/assets/img/ThreadLess/3th.png){: .shadow } 
 _ThreadlessInject Options_
+
+## ThreadlessInject -> Remote Desktop Connection(mstsc.exe)
+
+- We'll be injecting shellcode into **notepad.exe**, targeting the `CloseHandle` export function.  
+
+- This function resides in **kernelbase.dll** and will serve as our hijack point for threadless execution.
+
+![Desktop View](/assets/img/ThreadLess/4th.png){: .shadow } 
+_Lazy Mans choice -> CloseHandle_
+
+
+Next is to prepare our shellcode.For demo purposes will be using notepad shellcode replace this with your beacon shellcode.
+
+| Option            | Description                                                                 |
+|-------------------|-----------------------------------------------------------------------------|
+| `-p, --pid=VALUE`  | Target process ID to inject the shellcode into. Typically, this is the PID of the process you want to hijack (e.g., notepad.exe). |
+| `-d, --dll=VALUE`  | The name of the DLL that contains the export to be patched. This must be a `KnownDll`, such as `kernelbase.dll`. |
+| `-e, --export=VALUE` | The specific exported function within the DLL that will be hijacked (e.g., `CryptProtectMemory`). |
