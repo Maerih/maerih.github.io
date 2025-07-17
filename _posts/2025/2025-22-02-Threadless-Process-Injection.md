@@ -122,9 +122,6 @@ _CommandLine Setting-> Running ThreadLessInject_
 - Voilà! Notepad popped up—successfully triggered after our shellcode executed. It appeared moments after interacting with the Remote Desktop window, such as minimizing or switching focus.
 
 
-{% include embed/video.html src='/assets/img/ThreadLess/7.mov' types='mov'%}
-
-
 
 {%
   include embed/video.html
