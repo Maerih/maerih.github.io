@@ -7,7 +7,7 @@ tags:
 pin: false
 description: Using Discord bot as a covert channel, Mythic C2’s Athena enables stealthy communication for red team command and control.
 toc: true
-image: /assets/img/ThreadLess/threadless.png
+image: /assets/img/Athena/mainath.png
 ---
 
 # What is Athena
@@ -19,7 +19,7 @@ image: /assets/img/ThreadLess/threadless.png
 # Installation
 
 - To install Athena Agent for Mythic c2:
-- [Athena Agent](https://github.com/CCob/ThreadlessInject)
+- [Athena Agent](https://github.com/MythicAgents/Athena)
 
 - `./mythic-cli install github https://github.com/MythicAgents/Athena`
 
