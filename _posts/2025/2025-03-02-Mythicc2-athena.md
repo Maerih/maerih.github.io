@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Mythic C2 and Athena Over Discord: Covert Red Team Communications"
+title: "Communications Over Discord: Mythic C2"
 date: 2025-03-10 19:43:00 +0300
 categories: [C&C]
 tags: 
@@ -32,20 +32,20 @@ image: /assets/img/Athena/mainath.png
 - We have to create a discord bot to facilitate our communitions.
 - Before creating our bot we should create a discord server where this communication will be really tunneled through.
 
-# 🚀 How to Create a Discord Server
+#  How to Create a Discord Server
 
 Follow these steps to create your own Discord server:
 
 ---
 
-## 🛠️ Step 1: Sign In or Create a Discord Account
+##  Step 1: Sign In or Create a Discord Account
 
 - Go to [Discord](https://discord.com)
 - Log in or click **"Register"** to create a new account.
 
 ---
 
-## ➕ Step 2: Create a New Server
+##  Step 2: Create a New Server
 
 1. Open the Discord app (web/desktop/mobile).
 2. On the left sidebar, click the **"+" (Add a Server)** button.
@@ -56,7 +56,7 @@ Follow these steps to create your own Discord server:
 
 ---
 
-## 🖼️ Step 3: Configure Server Basics
+##  Step 3: Configure Server Basics
 
 - **Server Name:** Give your server a name (e.g., `test`)
 - **Server Icon:** (Optional) Upload an image/logo.
@@ -77,7 +77,7 @@ _Created a Discord Server to Facilitate our communications_
 2. Click **"New Application"**
 3. Enter a name and click **"Create"**
 
-## 🤖 Step 2: Create a Bot User
+##  Step 2: Create a Bot User
 
 1. Inside your application, go to **> Bot** **Permission section** choose Administrator.
 ![Desktop View](/assets/img/Athena/3ath.png){: .shadow } 
