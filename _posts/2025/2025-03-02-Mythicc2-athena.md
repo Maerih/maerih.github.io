@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "Communications Over Discord: Mythic C2"
-date: 2025-03-10 19:43:00 +0300
+title: "Agent Athena: Mythic C2 Communications Over Discord"
+date: 2025-01-10 19:43:00 +0300
 categories: [C&C]
 tags: 
 pin: false
