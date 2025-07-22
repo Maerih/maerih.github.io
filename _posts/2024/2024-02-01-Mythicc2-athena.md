@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Agent Athena: Mythic C2 Communications Over Discord"
-date: 2024-01-10 19:43:00 +0300
+date: 2024-02-10 19:43:00 +0300
 categories: [C&C]
 tags: 
 pin: false
@@ -31,12 +31,12 @@ image: /assets/img/Athena/mainath.png
 
 `https://github.com/MythicC2Profiles/discord`
 
-# Configuring Discord 
+## Configuring Discord 
 
 - We have to create a discord bot to facilitate our communitions.
 - Before creating our bot we should create a discord server where this communication will be really tunneled through.
 
-#  How to Create a Discord Server
+##  How to Create a Discord Server
 
 Follow these steps to create your own Discord server:
 
