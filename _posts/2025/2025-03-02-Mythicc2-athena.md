@@ -25,7 +25,11 @@ image: /assets/img/Athena/mainath.png
 
 - Once installed it will appear in the **Installed Services** Section in Mythic
 
-![Desktop View](/assets/img/Athena/1ath.png){: .shadow } 
+![Desktop View](/assets/img/Athena/1ath.png){: .shadow }
+
+- Install also the [Discord](https://github.com/MythicC2Profiles/discord) profile for our communications.
+
+`https://github.com/MythicC2Profiles/discord`
 
 # Configuring Discord 
 
@@ -135,13 +139,48 @@ _Configuring Channel Id_
 
 6. **Next** -> **Create Payload**
 
-## 🤖 Step 2: Create a Bot User
 
-1. Inside your application, go to **Bot > Add Bot**
-2. Click **Yes, do it!**
-3. Customize your bot name, icon, etc.
-4. Copy the **Bot Token** (keep it secret!)
 
----
+7. **Edit config file in Mythic C2 Profile**
+- Edit the `config.json` in the discord profile settings to include our creds.Token and channel Id.
 
-## 📜 Step 3: Set Up Your Project
+![Desktop View](/assets/img/Athena/14ath.png){: .shadow } 
+_Configuring Profile config.json_
+
+
+- Restart the profile to take changes.
+
+# Sending Payload to Victim.
+
+- There are many ways to get your payload to the victim.ie phishing which is common.
+- For us we'll just spin a python small webserver to host our payload for the victim.
+
+`python3 -m http.server 9999`
+
+
+> Defender should be disabled. We've **not** implemented any kind of evasion, and the Athena agent will  being flagged by Defender or most EDRs. 
+{: .prompt-tip }
+
+## Recieving Callback.
+
+- Once our payload is executed on the victim we recieve a callback.But take note in our Discord server.Here is where our communications are being facilated on.
+
+![Desktop View](/assets/img/Athena/11ath.png){: .shadow } 
+_Getting Callback in Mythic_
+
+### Back to our callback
+- We get a callback.Lets interact with the victim.We only installed a few commands including the `whoami`.
+
+![Desktop View](/assets/img/Athena/12ath.png){: .shadow } 
+_runnig whoami command_
+
+### On Discord
+- Tasking our agent reaches to discord which is used as a middle man.We can see the conversation transaction in the Discord server we created earlier. 
+
+![Desktop View](/assets/img/Athena/13ath.png){: .shadow } 
+_unecrypted discord facilitator_
+
+
+
+> This is just a POC.From here create a good Loader or Encrypt your payloads to avoid detection from EDRs and AVs. 
+{: .prompt-danger }
