@@ -6,9 +6,7 @@ categories: [Cheat Sheet]
 tags: [docker, cheat sheet, containers]
 ---
 
-This is my docker cheat sheet. There are many like it, but this one is mine.
 
-I'm not about to teach anyone anything that they can't find on [Docker docs](https://docs.docker.com/), in fact that's probably where you should go if you don't know much about Docker. But this is a publicized version of what I have in my notes that I use as a go-to when I can't remember how I ran that one command I ran a few months ago on that host that...man I can't even remember the name of the host. Crap, did I dream this or something?
 
 ## The Basics
 
