@@ -105,7 +105,7 @@ avatar: "/assets/maerih.webp"
 social_preview_image: # string, local or CORS resources
 
 # boolean type, the global switch for TOC in posts.
-toc: false
+toc: true
 
 comments:
   # Global switch for the post-comment system. Keeping it empty means disabled.
@@ -147,7 +147,7 @@ pwa:
     deny_paths:
       # - "/example"  # URLs match `<SITE_URL>/example/*` will not be cached by the PWA
 
-paginate: 6
+paginate: 10
 
 # The base URL of your site
 baseurl: ""
