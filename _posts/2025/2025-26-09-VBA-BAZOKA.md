@@ -7,7 +7,7 @@ tags:
 pin: false
 description: Dissecting Advanced VBA Macro Execution Techniques.
 toc: true
-image: /assets/img/ThreadLess/threadless.png
+image: /assets/img/VBA/vba.png
 ---
 
 <h1>The Unyielding Threat: Dissecting Advanced VBA Macro Execution Techniques</h1>
@@ -79,6 +79,18 @@ This technique is particularly interesting because it:
   
 - Shows how .NET concepts can be adapted through COM interfaces
   
+
+
+{%
+  include embed/video.html
+  src='/assets/Videos/dotnet2jscrpt.mp4'
+  types='ogg|mov'
+  title='Demo video'
+  autoplay=true
+  loop=true
+  muted=true
+%}
+
 
 ## InvokeVerbEx and RDS.DataSpace Techniques
 
