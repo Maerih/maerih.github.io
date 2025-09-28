@@ -57,7 +57,6 @@ This approach demonstrates multiple COM object abuse techniques:
 {%
   include embed/video.html
   src='/assets/Videos/VBA/1.mp4'
-  types='ogg|mov'
   title='Demo video'
   autoplay=true
   loop=true
@@ -93,7 +92,6 @@ This technique is particularly interesting because it:
 {%
   include embed/video.html
   src='/assets/Videos/VBA/dotnet2jscrpt.mp4'
-  types='ogg|mov'
   title='Demo video'
   autoplay=true
   loop=true
@@ -146,7 +144,6 @@ This technique demonstrates file association hijacking through Shell.Application
 {%
   include embed/video.html
   src='/assets/Videos/VBA/rds.mp4'
-  types='ogg|mov'
   title='Demo video'
   autoplay=true
   loop=true
