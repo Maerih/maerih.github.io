@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "VBA Bazooka: Different Ways of Launching"
-date: 2025-04-22 19:43:00 +0300
+date: 2025-09-26 19:43:00 +0300
 categories: [Malware Development]
 tags: 
 pin: false

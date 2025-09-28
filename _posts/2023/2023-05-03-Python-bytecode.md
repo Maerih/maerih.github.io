@@ -314,7 +314,6 @@ There is also `p8()` and `p16()` for packing 8 and 16 bits, respectively. Though
 
 ## Manipulate Bits with Math
 
-I can't end this without mentioning bitwise arithmetic. Utilizing standard bitwise math can help you modify individual bits within a byte without having to do any weird list breakouts and re-assembling. Sometimes you just want to flip a single bit in a byte, and the easiest way to do that is using some fancy logical operators. I talk about some of this in my [PRNG and why you should tread lightly]({% post_url 2021-03-21-pseudo-random-number-generators-and-why-you-should-tread-lightly %}) page, but I'll just mention some of the easier methods used for bit flipping and such.
 
 And yeah, if you already know about logical arithmetic then you can probably skip this section.
 
