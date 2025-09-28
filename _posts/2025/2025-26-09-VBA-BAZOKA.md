@@ -239,6 +239,15 @@ This technique demonstrates a two-stage approach to execution:
   
 - `True` parameter waits for command completion before proceeding
   
+{%
+  include embed/video.html
+  src='/assets/Videos/VBA/task.mp4'
+  title='Demo video'
+  autoplay=true
+  loop=true
+  muted=true
+%}
+
 
 **Stage 2: Immediate Execution**
 
@@ -275,10 +284,6 @@ From our observations at SCIAT AFRICA, scheduled task abuse provides several adv
 
 ### Advanced Attack Scenarios
 
-More sophisticated attackers enhance this technique with additional features:
-
-vb
 
 > Stay tuned for Part 2, where we'll dive into even more clever ways macros get the job done!
-
 {: .prompt-tip }
