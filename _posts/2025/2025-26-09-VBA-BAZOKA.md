@@ -54,6 +54,15 @@ This approach demonstrates multiple COM object abuse techniques:
   
 - **WMPlayer.OCX** misuse illustrates how media controls can be weaponized
   
+{%
+  include embed/video.html
+  src='/assets/Videos/VBA/1.mp4'
+  types='ogg|mov'
+  title='Demo video'
+  autoplay=true
+  loop=true
+  muted=true
+%}
 
 ## DotNetToJScript Style Execution
 
@@ -83,7 +92,7 @@ This technique is particularly interesting because it:
 
 {%
   include embed/video.html
-  src='/assets/Videos/dotnet2jscrpt.mp4'
+  src='/assets/Videos/VBA/dotnet2jscrpt.mp4'
   types='ogg|mov'
   title='Demo video'
   autoplay=true
@@ -98,6 +107,8 @@ In our continued exploration of sophisticated VBA macro execution
 techniques, we now examine two particularly interesting methods that 
 leverage Windows Shell components and remote data services to bypass 
 security controls.
+
+
 
 ## InvokeVerbEx: File Association Abuse
 
@@ -131,6 +142,17 @@ This technique demonstrates file association hijacking through Shell.Application
 - **File Parsing**: Locates the target executable using ParseName
   
 - **Verb Invocation**: Uses InvokeVerbEx with the "open" verb to launch the application
+
+{%
+  include embed/video.html
+  src='/assets/Videos/VBA/rds.mp4'
+  types='ogg|mov'
+  title='Demo video'
+  autoplay=true
+  loop=true
+  muted=true
+%}
+
   
 
 ## ShellExecute: Direct Process Creation
