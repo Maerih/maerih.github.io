@@ -1,6 +1,5 @@
 ---
 title: PGP KEY
-layout: categories
 icon: fas fa-key
 order: 1
 ---
