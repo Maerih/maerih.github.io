@@ -87,7 +87,7 @@ dJCwM3I6cA==
 </div>
 
 <div style="margin-top:0.75rem;">
-<a href="/assets/maerihpubic.asc"
+<a href="/assets/maerihpublic.asc"
 style="background:#238636; color:#ffffff; padding:6px 12px; border-radius:6px; text-decoration:none;">
 Download publickey.asc
 </a>
