@@ -6,15 +6,13 @@ order: 1
 
 # PGP
 
-<small>
-<span style="font-family: monospace;">
-OpenPGP · Identity · Verification
-</span>
+<small style="font-family: monospace; color:#8b949e;">
+OpenPGP · Secure Communication · Identity Verification
 </small>
 
 ---
 
-## 🔐 Fingerprint
+## Fingerprint
 
 <div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9;">
 5D6C 9688 9F39 4A42 794F 2441 DF3F FB27 AC9C 93DF
@@ -29,12 +27,9 @@ Copy fingerprint
 
 ---
 
-## 📎 Public Key
+## Public Key
 
-<details>
-<summary style="cursor:pointer; color:#58a6ff;">Show public key</summary>
-
-<div style="margin-top:1rem; background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9; overflow-x:auto;">
+<div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9; overflow-x:auto;">
 <pre>
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 mQINBGQaVTsBEADQA5bDbLCdqQRtxmpKQTTfFZ9u8ta0w5fqFIWLxH7/nqkB57W5
@@ -49,18 +44,33 @@ gNbcJPZQWSiTSvoozb4L+W31j3VhVOWvLs18sDQwFcCEGb
 </pre>
 </div>
 
-</details>
-
 <div style="margin-top:0.75rem;">
 <a href="/assets/publickey.asc"
-style="background:#238636; color:#fff; padding:6px 12px; border-radius:6px; text-decoration:none;">
-Download .asc
+style="background:#238636; color:#ffffff; padding:6px 12px; border-radius:6px; text-decoration:none;">
+Download publickey.asc
 </a>
 </div>
 
 ---
 
-## 🌍 Keyservers
+## Secure Contact
+
+<div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9;">
+secure@yourdomain.tld<br>
+Encrypt before sending
+</div>
+
+---
+
+## Key ID
+
+<div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:0.75rem; font-family:monospace; color:#c9d1d9;">
+0xDF3FFB27AC9C93DF
+</div>
+
+---
+
+## Keyservers
 
 <div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9;">
 pgp.mit.edu<br>
@@ -69,33 +79,6 @@ keyserver.ubuntu.com
 
 ---
 
-## 🧪 Signed Artifacts
-
-<div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9;">
-hashes.sha256<br>
-hashes.sha256.asc
-</div>
-
-<small style="color:#8b949e;">
-Detached signatures · SHA‑256
+<small style="color:#8b949e; font-family: monospace;">
+Verify fingerprint out‑of‑band before trusting
 </small>
-
----
-
-## 🛡️ Trust Model
-
-<div style="background:#0d1117; border-left:4px solid #f85149; padding:0.75rem; font-family:monospace; color:#c9d1d9;">
-Web of Trust<br>
-Fingerprint verification required
-</div>
-
----
-
-## 🧾 Metadata
-
-<div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9;">
-Key Type: RSA 4096<br>
-Capabilities: sign · encrypt · certify<br>
-Format: OpenPGP
-</div>
-
