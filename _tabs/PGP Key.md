@@ -4,21 +4,37 @@ icon: fas fa-key
 order: 1
 ---
 
-# 🔑 PGP Public Key
+# PGP
 
-Use this page to **securely communicate** or verify the integrity of my research artifacts.  
-Below, everything is organized into cards for easy navigation.
+<small>
+<span style="font-family: monospace;">
+OpenPGP · Identity · Verification
+</span>
+</small>
 
 ---
 
-<div class="card" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background-color: #f9fafb;">
-<h3>🧾 Fingerprint</h3>
-<p><code>5D6C 9688 9F39 4A42 794F 2441 DF3F FB27 AC9C 93DF</code></p>
-<p><strong>Tip:</strong> Always verify the fingerprint <em>out-of-band</em> before trusting this key.</p>
+## 🔐 Fingerprint
+
+<div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9;">
+5D6C 9688 9F39 4A42 794F 2441 DF3F FB27 AC9C 93DF
 </div>
 
-<div class="card" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background-color: #f0fdf4;">
-<h3>📦 Public Key</h3>
+<div style="margin-top:0.75rem;">
+<button onclick="navigator.clipboard.writeText('5D6C96889F394A42794F2441DF3FFB27AC9C93DF')"
+style="background:#21262d; color:#c9d1d9; border:1px solid #30363d; padding:6px 12px; border-radius:6px; cursor:pointer;">
+Copy fingerprint
+</button>
+</div>
+
+---
+
+## 📎 Public Key
+
+<details>
+<summary style="cursor:pointer; color:#58a6ff;">Show public key</summary>
+
+<div style="margin-top:1rem; background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9; overflow-x:auto;">
 <pre>
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 mQINBGQaVTsBEADQA5bDbLCdqQRtxmpKQTTfFZ9u8ta0w5fqFIWLxH7/nqkB57W5
@@ -31,42 +47,55 @@ fsX7m3lnVTCMQYzvkG6ygIUvOEQ4pp6Dc1DH67ofuuDurr2S5TQzBaX30hfH4E/V
 gNbcJPZQWSiTSvoozb4L+W31j3VhVOWvLs18sDQwFcCEGb
 -----END PGP PUBLIC KEY BLOCK-----
 </pre>
-<p>Download the key: <a href="/assets/publickey.asc" target="_blank">publickey.asc</a></p>
 </div>
 
-<div class="card" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background-color: #f0f9ff;">
-<h3>🌐 Keyservers</h3>
-<ul>
-<li><a href="https://pgp.mit.edu/" target="_blank">MIT PGP Keyserver</a></li>
-<li><a href="https://keyserver.ubuntu.com/" target="_blank">Ubuntu Keyserver</a></li>
-</ul>
-<pre>
-gpg --keyserver pgp.mit.edu --recv-keys 5D6C96889F394A42794F2441DF3FFB27AC9C93DF
-</pre>
+</details>
+
+<div style="margin-top:0.75rem;">
+<a href="/assets/publickey.asc"
+style="background:#238636; color:#fff; padding:6px 12px; border-radius:6px; text-decoration:none;">
+Download .asc
+</a>
 </div>
 
-<div class="card" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background-color: #fff7ed;">
-<h3>✍️ Verifying Messages or Artifacts</h3>
-<pre>
-gpg --verify artifact.txt.sig artifact.txt
-</pre>
-<p>A valid signature confirms the file is <strong>authentic</strong> and <strong>untampered</strong>.</p>
+---
+
+## 🌍 Keyservers
+
+<div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9;">
+pgp.mit.edu<br>
+keyserver.ubuntu.com
 </div>
 
-<div class="card" style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background-color: #f5f3ff;">
-<h3>🛡️ Secure Communication Tips</h3>
-<ul>
-<li>Always verify the fingerprint <em>out-of-band</em>.</li>
-<li>Use this key to encrypt emails, files, or research artifacts.</li>
-<li>Never rely solely on keyservers; double-check fingerprints.</li>
-<li>Keep your private key offline or hardware-backed for security.</li>
-</ul>
+---
+
+## 🧪 Signed Artifacts
+
+<div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9;">
+hashes.sha256<br>
+hashes.sha256.asc
 </div>
 
-<div class="card" style="padding: 1rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background-color: #f0fdf4;">
-<h3>💻 Copy Fingerprint</h3>
-<button onclick="navigator.clipboard.writeText('5D6C96889F394A42794F2441DF3FFB27AC9C93DF')" 
-style="padding: 0.5rem 1rem; border-radius: 0.5rem; border: none; background-color: #4ade80; color: #000; cursor: pointer;">
-Copy Fingerprint
-</button>
+<small style="color:#8b949e;">
+Detached signatures · SHA‑256
+</small>
+
+---
+
+## 🛡️ Trust Model
+
+<div style="background:#0d1117; border-left:4px solid #f85149; padding:0.75rem; font-family:monospace; color:#c9d1d9;">
+Web of Trust<br>
+Fingerprint verification required
 </div>
+
+---
+
+## 🧾 Metadata
+
+<div style="background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:1rem; font-family:monospace; color:#c9d1d9;">
+Key Type: RSA 4096<br>
+Capabilities: sign · encrypt · certify<br>
+Format: OpenPGP
+</div>
+
